@@ -9,4 +9,8 @@
 
 rootProject.name = 'plex-on-the-go'
 
-include 'plex:objects'
+include 'plex:plex-objects'
+include 'rest'
+include 'rest'
+include 'rest'
+

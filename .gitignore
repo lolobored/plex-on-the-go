@@ -4,3 +4,8 @@
 .idea
 plex-on-the-go.iml
 plex/objects/out
+plex/plex-objects/build
+plex/plex-objects/out
+rest/build/classes
+rest/build
+rest/out
