@@ -1,0 +1,6 @@
+/.nb-gradle/
+/plex/objects/build/
+.gradle
+.idea
+plex-on-the-go.iml
+plex/objects/out
