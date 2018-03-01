@@ -10,7 +10,4 @@
 rootProject.name = 'plex-on-the-go'
 
 include 'plex:plex-objects'
-include 'rest'
-include 'rest'
-include 'rest'
-
+include 'http'

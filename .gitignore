@@ -9,3 +9,5 @@ plex/plex-objects/out
 rest/build/classes
 rest/build
 rest/out
+http/build
+http/out
