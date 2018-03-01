@@ -11,3 +11,6 @@ rest/build
 rest/out
 http/build
 http/out
+/plex-apis/build/
+plex/build
+plex/plex-apis/out

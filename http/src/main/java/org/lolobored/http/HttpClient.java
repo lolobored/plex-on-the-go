@@ -2,6 +2,8 @@ package org.lolobored.http;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -20,6 +22,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,32 +31,37 @@ import java.util.Map;
  */
 public class HttpClient {
 
-    private static int GLOBAL_RETRY = 3;
-
     public static final String HTTP_GET = "GET";
     public static final String HTTP_PUT = "PUT";
     public static final String HTTP_POST = "POST";
     public static final String HTTP_DELETE = "DELETE";
 
+    public static final String FORM_URLENCODED= "application/x-www-form-urlencoded";
+
 
     public static String get(String url, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
 
-        return callHttp(url, "", HTTP_GET, httpHeaders, disableSSL);
+        return callHttp(url, "", null, HTTP_GET, httpHeaders, disableSSL);
     }
 
     public static String put(String url, String request, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
 
-        return callHttp(url, request, HTTP_PUT, httpHeaders, disableSSL);
+        return callHttp(url, request,null, HTTP_PUT, httpHeaders, disableSSL);
     }
 
     public static String post(String url, String request, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
 
-        return callHttp(url, request, HTTP_POST, httpHeaders, disableSSL);
+        return callHttp(url, request, null, HTTP_POST, httpHeaders, disableSSL);
+    }
+
+    public static String postUrlEncoded(String url, List<NameValuePair> paramsPair, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
+
+        return callHttp(url, null, paramsPair, HTTP_POST, httpHeaders, disableSSL);
     }
 
     public static String delete(String url, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
 
-        return callHttp(url, "", HTTP_DELETE, httpHeaders, disableSSL);
+        return callHttp(url, "", null, HTTP_DELETE, httpHeaders, disableSSL);
     }
 
     private static HttpRequestBase retrieveHttpRequestBase(String url, String operationType) throws HttpException {
@@ -71,7 +80,7 @@ public class HttpClient {
 
     }
 
-    private static String callHttp(String url, String request, String operationType, Map<String, String> httpHeader, boolean disableSSL) throws HttpException {
+    private static String callHttp(String url, String request, List<NameValuePair> paramsPair, String operationType, Map<String, String> httpHeader, boolean disableSSL) throws HttpException {
         String httpResponse = "";
         HttpRequestBase httpOperation = retrieveHttpRequestBase(url, operationType);
         org.apache.http.client.HttpClient client = getHttpClient(disableSSL);
@@ -82,8 +91,13 @@ public class HttpClient {
         try {
 
             if (httpOperation instanceof HttpPost) {
-                StringEntity params = new StringEntity(request);
-                ((HttpPost) httpOperation).setEntity(params);
+                if (FORM_URLENCODED.equals(httpHeader.getOrDefault("Content-Type", ""))){
+                    ((HttpPost) httpOperation).setEntity(new UrlEncodedFormEntity(paramsPair));
+                }
+                else {
+                    StringEntity params = new StringEntity(request);
+                    ((HttpPost) httpOperation).setEntity(params);
+                }
             } else if (httpOperation instanceof HttpPut) {
                 StringEntity params = new StringEntity(request);
                 ((HttpPut) httpOperation).setEntity(params);

@@ -11,3 +11,5 @@ rootProject.name = 'plex-on-the-go'
 
 include 'plex:plex-objects'
 include 'http'
+include 'plex:plex-apis'
+
