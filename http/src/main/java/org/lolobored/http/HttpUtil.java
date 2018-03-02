@@ -46,11 +46,11 @@ public class HttpUtil {
         httpClient= getHttpClient(disableSSL);
     }
 
-    public static synchronized final HttpUtil getInstance(Boolean disableSSL) throws HttpException {
-        HttpUtil httpUtil= instance.get(disableSSL);
+    public static synchronized final HttpUtil getInstance(Boolean bypassSSL) throws HttpException {
+        HttpUtil httpUtil= instance.get(bypassSSL);
         if (httpUtil == null){
-            httpUtil= new HttpUtil(disableSSL);
-            instance.put(disableSSL, httpUtil);
+            httpUtil= new HttpUtil(bypassSSL);
+            instance.put(bypassSSL, httpUtil);
         }
         return httpUtil;
     }
@@ -132,8 +132,8 @@ public class HttpUtil {
         }
     }
 
-    private HttpClient getHttpClient(boolean disableSSL) throws HttpException {
-        if (!disableSSL) {
+    private HttpClient getHttpClient(boolean bypassSSL) throws HttpException {
+        if (!bypassSSL) {
             return HttpClientBuilder.create().build();
         } else {
             try {

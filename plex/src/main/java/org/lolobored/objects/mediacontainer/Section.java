@@ -3,32 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects.metadata;
+package org.lolobored.objects.mediacontainer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
 
 /**
  * @author laurentlaborde
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MediaPlex {
-    @JsonProperty("Part")
-    private List<Part> part;
+public class Section {
+    @JsonProperty("MediaContainer")
+    private MediaContainer mediaContainer;
 
     /**
-     * @return the part
+     * @return the MediaContainer
      */
-    public List<Part> getPart() {
-        return part;
+    public MediaContainer getMediaContainer() {
+        return mediaContainer;
     }
 
     /**
-     * @param part the part to set
+     * @param MediaContainer the MediaContainer to set
      */
-    public void setPart(List<Part> part) {
-        this.part = part;
+    public void setMediaContainer(MediaContainer mediaContainer) {
+        this.mediaContainer = mediaContainer;
     }
 }

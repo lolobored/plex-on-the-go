@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects.mediacontainer;
+package org.lolobored.objects.mediacontainer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigInteger;
 import java.util.List;
 
-import objects.metadata.Metadata;
+import org.lolobored.objects.metadata.Metadata;
 
 /**
  * @author laurentlaborde
