@@ -1,4 +1,4 @@
-package org.lolobored.model;
+package org.lolobored.plex.model;
 
 import org.apache.commons.lang3.StringUtils;
 

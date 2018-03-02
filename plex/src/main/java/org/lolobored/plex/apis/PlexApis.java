@@ -5,7 +5,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.lolobored.http.HttpException;
 import org.lolobored.http.HttpUtil;
-import org.lolobored.model.*;
+import org.lolobored.plex.model.*;
 import org.lolobored.plex.apis.token.AccessToken;
 import org.lolobored.plex.objects.mediacontainer.Directory;
 import org.lolobored.plex.objects.mediacontainer.MediaType;
@@ -44,14 +44,17 @@ public class PlexApis {
     public static List<Movie> exploreMovies(String baseUrl, Section mediaLibraries, String token, String user, boolean bypassSSL) throws HttpException, IOException {
         List<Movie> movies = new ArrayList();
         for (Directory directory : mediaLibraries.getMediaContainer().getDirectory()) {
+
             if (MediaType.MOVIE_TYPE.equals(directory.getType())) {
+                String library = directory.getTitle();
                 String moviesJson= HttpUtil.getInstance(bypassSSL).get(baseUrl + "/library/sections/" + directory.getKey().toString() + "/all", getPlexHttpHeaders(token));
                 Section moviesSection = mapper.readValue(moviesJson, Section.class);
+
                 for (Metadata metadata : moviesSection.getMediaContainer().getMetadata()) {
 
                     for (MediaPlex plexMedia : metadata.getMedia()) {
                         Movie movie = new Movie();
-                        loadMediaInfo(movie, metadata, plexMedia, user);
+                        loadMediaInfo(movie, metadata, plexMedia, library, user);
                         movies.add(movie);
                     }
                 }
@@ -66,6 +69,7 @@ public class PlexApis {
         Show show;
         for (Directory directory : mediaLibraries.getMediaContainer().getDirectory()) {
             if (MediaType.TV_SHOW_TYPE.equals(directory.getType())) {
+                String library = directory.getTitle();
                 String tvShowsJson = HttpUtil.getInstance(bypassSSL).get(baseUrl + "/library/sections/" + directory.getKey().toString() + "/all", getPlexHttpHeaders(token));
                 Section tvshows = mapper.readValue(tvShowsJson, Section.class);
                 for (Metadata showMetadata : tvshows.getMediaContainer().getMetadata()) {
@@ -82,7 +86,7 @@ public class PlexApis {
 
                             for (MediaPlex plexMedia : episodeMetadata.getMedia()) {
                                 Episode episode = new Episode();
-                                loadMediaInfo(episode, episodeMetadata, plexMedia, user);
+                                loadMediaInfo(episode, episodeMetadata, plexMedia, library, user);
                                 episode.setSeason(season);
                                 episode.setShow(show);
                                 episode.setEpisode(episodeMetadata.getIndex());
@@ -111,13 +115,14 @@ public class PlexApis {
         return show;
     }
 
-    private static void loadMediaInfo(Media media, Metadata metadata, MediaPlex plexMedia, String user) {
+    private static void loadMediaInfo(Media media, Metadata metadata, MediaPlex plexMedia, String library, String user) {
         media.setFileLocation(plexMedia.getPart().get(0).getFile());
         media.setRating(metadata.getRating());
         media.setSummary(metadata.getSummary());
         media.setTitle(metadata.getTitle());
         media.setYear(metadata.getYear());
         media.setUser(user);
+        media.setLibrary(library);
         if (metadata.getOriginallyAvailableAt() != null) {
             media.setStartDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
         }

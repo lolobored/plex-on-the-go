@@ -1,5 +1,5 @@
 
-package org.lolobored.model;
+package org.lolobored.plex.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

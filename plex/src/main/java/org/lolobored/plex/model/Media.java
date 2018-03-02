@@ -1,5 +1,5 @@
 
-package org.lolobored.model;
+package org.lolobored.plex.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,6 +11,7 @@ public class Media {
     public final String MOVIE_TYPE= "movie";
   
   protected String type;
+  private String library;
   private String user;
   private String title;
   private String fileLocation;
@@ -180,5 +181,13 @@ public class Media {
   public void setUser(String user) {
     this.user = user;
   }
+
+    public void setLibrary(String library) {
+        this.library = library;
+    }
+
+    public String getLibrary() {
+        return library;
+    }
 }
 

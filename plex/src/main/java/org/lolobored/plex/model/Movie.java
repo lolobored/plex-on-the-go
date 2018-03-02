@@ -1,4 +1,4 @@
-package org.lolobored.model;
+package org.lolobored.plex.model;
 
 public class Movie extends Media{
 
