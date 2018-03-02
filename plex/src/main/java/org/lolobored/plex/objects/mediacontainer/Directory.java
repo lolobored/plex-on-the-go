@@ -15,65 +15,65 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Directory {
-    private String key;
-    private String type;
-    private String title;
-    @JsonProperty("Location")
-    private List<DirectoryLocation> location;
+	private String key;
+	private String type;
+	private String title;
+	@JsonProperty("Location")
+	private List<DirectoryLocation> location;
 
-    /**
-     * @return the key
-     */
-    public String getKey() {
-        return key;
-    }
+	/**
+	 * @return the key
+	 */
+	public String getKey() {
+		return key;
+	}
 
-    /**
-     * @param key the key to set
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
+	/**
+	 * @param key the key to set
+	 */
+	public void setKey(String key) {
+		this.key = key;
+	}
 
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
 
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    /**
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
-    }
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
 
-    /**
-     * @param title the title to set
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    /**
-     * @return the location
-     */
-    public List<DirectoryLocation> getLocation() {
-        return location;
-    }
+	/**
+	 * @return the location
+	 */
+	public List<DirectoryLocation> getLocation() {
+		return location;
+	}
 
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(List<DirectoryLocation> location) {
-        this.location = location;
-    }
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(List<DirectoryLocation> location) {
+		this.location = location;
+	}
 }

@@ -1,5 +1,6 @@
 dependencies {
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.1'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.4'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.4'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
     compile project(':http')
 }

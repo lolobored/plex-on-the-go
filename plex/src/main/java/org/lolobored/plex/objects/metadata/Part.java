@@ -12,19 +12,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Part {
-    private String file;
+	private String file;
 
-    /**
-     * @return the file
-     */
-    public String getFile() {
-        return file;
-    }
+	/**
+	 * @return the file
+	 */
+	public String getFile() {
+		return file;
+	}
 
-    /**
-     * @param file the file to set
-     */
-    public void setFile(String file) {
-        this.file = file;
-    }
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(String file) {
+		this.file = file;
+	}
 }

@@ -1,10 +1,13 @@
 package org.lolobored.plex.model;
 
-public class Movie extends Media{
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-  public Movie() {
-      type= MOVIE_TYPE;
-  }
-  
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Movie extends Media {
+
+	public Movie() {
+		type = MOVIE_TYPE;
+	}
+
 }
 

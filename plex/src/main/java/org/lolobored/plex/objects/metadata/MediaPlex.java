@@ -15,20 +15,20 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MediaPlex {
-    @JsonProperty("Part")
-    private List<Part> part;
+	@JsonProperty("Part")
+	private List<Part> part;
 
-    /**
-     * @return the part
-     */
-    public List<Part> getPart() {
-        return part;
-    }
+	/**
+	 * @return the part
+	 */
+	public List<Part> getPart() {
+		return part;
+	}
 
-    /**
-     * @param part the part to set
-     */
-    public void setPart(List<Part> part) {
-        this.part = part;
-    }
+	/**
+	 * @param part the part to set
+	 */
+	public void setPart(List<Part> part) {
+		this.part = part;
+	}
 }

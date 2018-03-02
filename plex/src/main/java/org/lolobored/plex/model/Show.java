@@ -1,146 +1,148 @@
-
 package org.lolobored.plex.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Show {
 
-  private String showTitle;
-  private String summary;
-  private String contentRating;
-  private String studio;
-  private BigDecimal rating;
-  private Integer year;
-  private LocalDate startDate;
-  private List<String> genres;
-  private List<String> actors;
+	private String showTitle;
+	private String summary;
+	private String contentRating;
+	private String studio;
+	private BigDecimal rating;
+	private Integer year;
+	private LocalDate startDate;
+	private List<String> genres;
+	private List<String> actors;
 
-  
-  /**
-   * @return the summary
-   */
-  public String getSummary() {
-    return summary;
-  }
 
-  /**
-   * @param summary the summary to set
-   */
-  public void setSummary(String summary) {
-    this.summary = summary;
-  }
+	/**
+	 * @return the summary
+	 */
+	public String getSummary() {
+		return summary;
+	}
 
-  /**
-   * @return the contentRating
-   */
-  public String getContentRating() {
-    return contentRating;
-  }
+	/**
+	 * @param summary the summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 
-  /**
-   * @param contentRating the contentRating to set
-   */
-  public void setContentRating(String contentRating) {
-    this.contentRating = contentRating;
-  }
+	/**
+	 * @return the contentRating
+	 */
+	public String getContentRating() {
+		return contentRating;
+	}
 
-  /**
-   * @return the studio
-   */
-  public String getStudio() {
-    return studio;
-  }
+	/**
+	 * @param contentRating the contentRating to set
+	 */
+	public void setContentRating(String contentRating) {
+		this.contentRating = contentRating;
+	}
 
-  /**
-   * @param studio the studio to set
-   */
-  public void setStudio(String studio) {
-    this.studio = studio;
-  }
+	/**
+	 * @return the studio
+	 */
+	public String getStudio() {
+		return studio;
+	}
 
-  /**
-   * @return the rating
-   */
-  public BigDecimal getRating() {
-    return rating;
-  }
+	/**
+	 * @param studio the studio to set
+	 */
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}
 
-  /**
-   * @param rating the rating to set
-   */
-  public void setRating(BigDecimal rating) {
-    this.rating = rating;
-  }
+	/**
+	 * @return the rating
+	 */
+	public BigDecimal getRating() {
+		return rating;
+	}
 
-  /**
-   * @return the year
-   */
-  public Integer getYear() {
-    return year;
-  }
+	/**
+	 * @param rating the rating to set
+	 */
+	public void setRating(BigDecimal rating) {
+		this.rating = rating;
+	}
 
-  /**
-   * @param year the year to set
-   */
-  public void setYear(Integer year) {
-    this.year = year;
-  }
+	/**
+	 * @return the year
+	 */
+	public Integer getYear() {
+		return year;
+	}
 
-  /**
-   * @return the startDate
-   */
-  public LocalDate getStartDate() {
-    return startDate;
-  }
+	/**
+	 * @param year the year to set
+	 */
+	public void setYear(Integer year) {
+		this.year = year;
+	}
 
-  /**
-   * @param startDate the startDate to set
-   */
-  public void setStartDate(LocalDate startDate) {
-    this.startDate = startDate;
-  }
+	/**
+	 * @return the startDate
+	 */
+	public LocalDate getStartDate() {
+		return startDate;
+	}
 
-  /**
-   * @return the genres
-   */
-  public List<String> getGenres() {
-    return genres;
-  }
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
 
-  /**
-   * @param genres the genres to set
-   */
-  public void setGenres(List<String> genres) {
-    this.genres = genres;
-  }
+	/**
+	 * @return the genres
+	 */
+	public List<String> getGenres() {
+		return genres;
+	}
 
-  /**
-   * @return the actors
-   */
-  public List<String> getActors() {
-    return actors;
-  }
+	/**
+	 * @param genres the genres to set
+	 */
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
+	}
 
-  /**
-   * @param actors the actors to set
-   */
-  public void setActors(List<String> actors) {
-    this.actors = actors;
-  }
-  
-  /**
-   * @return the showTitle
-   */
-  public String getShowTitle() {
-    return showTitle;
-  }
+	/**
+	 * @return the actors
+	 */
+	public List<String> getActors() {
+		return actors;
+	}
 
-  /**
-   * @param showTitle the showTitle to set
-   */
-  public void setShowTitle(String showTitle) {
-    this.showTitle = showTitle;
-  }
+	/**
+	 * @param actors the actors to set
+	 */
+	public void setActors(List<String> actors) {
+		this.actors = actors;
+	}
+
+	/**
+	 * @return the showTitle
+	 */
+	public String getShowTitle() {
+		return showTitle;
+	}
+
+	/**
+	 * @param showTitle the showTitle to set
+	 */
+	public void setShowTitle(String showTitle) {
+		this.showTitle = showTitle;
+	}
 }

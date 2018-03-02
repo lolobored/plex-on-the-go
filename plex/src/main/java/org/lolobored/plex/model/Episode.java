@@ -1,58 +1,60 @@
 package org.lolobored.plex.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class Episode extends Media{
-  
-  // tvshows only
-  private Show show;
-  private Season season;
-  private Integer episode;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Episode extends Media {
 
-  public Episode() {
-    type= EPISODE_TYPE;
-  }
-  
-  /**
-   * @return the show
-   */
-  public Show getShow() {
-    return show;
-  }
+	// tvshows only
+	private Show show;
+	private Season season;
+	private Integer episode;
 
-  /**
-   * @param show the show to set
-   */
-  public void setShow(Show show) {
-    this.show = show;
-  }
+	public Episode() {
+		type = EPISODE_TYPE;
+	}
 
-  /**
-   * @return the season
-   */
-  public Season getSeason() {
-    return season;
-  }
+	/**
+	 * @return the show
+	 */
+	public Show getShow() {
+		return show;
+	}
 
-  /**
-   * @param season the season to set
-   */
-  public void setSeason(Season season) {
-    this.season = season;
-  }
+	/**
+	 * @param show the show to set
+	 */
+	public void setShow(Show show) {
+		this.show = show;
+	}
 
-  /**
-   * @return the episode
-   */
-  public Integer getEpisode() {
-    return episode;
-  }
+	/**
+	 * @return the season
+	 */
+	public Season getSeason() {
+		return season;
+	}
 
-  /**
-   * @param episode the episode to set
-   */
-  public void setEpisode(Integer episode) {
-    this.episode = episode;
-  }
+	/**
+	 * @param season the season to set
+	 */
+	public void setSeason(Season season) {
+		this.season = season;
+	}
+
+	/**
+	 * @return the episode
+	 */
+	public Integer getEpisode() {
+		return episode;
+	}
+
+	/**
+	 * @param episode the episode to set
+	 */
+	public void setEpisode(Integer episode) {
+		this.episode = episode;
+	}
 
 }
 

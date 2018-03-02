@@ -14,49 +14,49 @@ import java.math.BigInteger;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Writer {
-    private BigInteger id;
-    private String filter;
-    private String tag;
+	private BigInteger id;
+	private String filter;
+	private String tag;
 
-    /**
-     * @return the id
-     */
-    public BigInteger getId() {
-        return id;
-    }
+	/**
+	 * @return the id
+	 */
+	public BigInteger getId() {
+		return id;
+	}
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
 
-    /**
-     * @return the filter
-     */
-    public String getFilter() {
-        return filter;
-    }
+	/**
+	 * @return the filter
+	 */
+	public String getFilter() {
+		return filter;
+	}
 
-    /**
-     * @param filter the filter to set
-     */
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
+	/**
+	 * @param filter the filter to set
+	 */
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
 
-    /**
-     * @return the tag
-     */
-    public String getTag() {
-        return tag;
-    }
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
+	}
 
-    /**
-     * @param tag the tag to set
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
+	/**
+	 * @param tag the tag to set
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 }

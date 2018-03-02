@@ -3,4 +3,5 @@ rootProject.name = 'plex-on-the-go'
 include 'plex'
 include 'http'
 include 'elasticsearch'
+include 'testing'
 

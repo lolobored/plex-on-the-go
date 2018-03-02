@@ -9,24 +9,23 @@ package org.lolobored.plex.apis.token;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- *
  * @author laurentlaborde
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessToken {
-  private User user;
+	private User user;
 
-  /**
-   * @return the user
-   */
-  public User getUser() {
-    return user;
-  }
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
 
-  /**
-   * @param user the user to set
-   */
-  public void setUser(User user) {
-    this.user = user;
-  }
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

@@ -13,20 +13,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Section {
-    @JsonProperty("MediaContainer")
-    private MediaContainer mediaContainer;
+	@JsonProperty("MediaContainer")
+	private MediaContainer mediaContainer;
 
-    /**
-     * @return the MediaContainer
-     */
-    public MediaContainer getMediaContainer() {
-        return mediaContainer;
-    }
+	/**
+	 * @return the MediaContainer
+	 */
+	public MediaContainer getMediaContainer() {
+		return mediaContainer;
+	}
 
-    /**
-     * @param MediaContainer the MediaContainer to set
-     */
-    public void setMediaContainer(MediaContainer mediaContainer) {
-        this.mediaContainer = mediaContainer;
-    }
+	/**
+	 * @param MediaContainer the MediaContainer to set
+	 */
+	public void setMediaContainer(MediaContainer mediaContainer) {
+		this.mediaContainer = mediaContainer;
+	}
 }

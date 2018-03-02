@@ -1,193 +1,198 @@
-
 package org.lolobored.plex.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Media {
 
-    public final String EPISODE_TYPE= "episode";
-    public final String MOVIE_TYPE= "movie";
-  
-  protected String type;
-  private String library;
-  private String user;
-  private String title;
-  private String fileLocation;
-  private Integer year;
-  private BigDecimal rating;
-  private String summary;
-  private List<String> genres;
-  private LocalDate startDate;
-  private List<String> directors;
-  private List<String> actors;
-  private List<String> writers;
-  
-  protected Media(){
-    
-  }
+	@JsonIgnore
+	public final String EPISODE_TYPE = "episode";
+	@JsonIgnore
+	public final String MOVIE_TYPE = "movie";
 
-  /**
-   * @return the title
-   */
-  public String getTitle() {
-    return title;
-  }
+	protected String type;
+	private String library;
+	private String user;
+	private String title;
+	private String fileLocation;
+	private Integer year;
+	private BigDecimal rating;
+	private String summary;
+	private List<String> genres;
+	private LocalDate startDate;
+	private List<String> directors;
+	private List<String> actors;
+	private List<String> writers;
 
-  /**
-   * @param title the title to set
-   */
-  public void setTitle(String title) {
-    this.title = title;
-  }
+	protected Media() {
 
-  /**
-   * @return the fileLocation
-   */
-  public String getFileLocation() {
-    return fileLocation;
-  }
+	}
 
-  /**
-   * @param fileLocation the fileLocation to set
-   */
-  public void setFileLocation(String fileLocation) {
-    this.fileLocation = fileLocation;
-  }
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
 
-  /**
-   * @return the year
-   */
-  public Integer getYear() {
-    return year;
-  }
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-  /**
-   * @param year the year to set
-   */
-  public void setYear(Integer year) {
-    this.year = year;
-  }
+	/**
+	 * @return the fileLocation
+	 */
+	public String getFileLocation() {
+		return fileLocation;
+	}
 
-  /**
-   * @return the rating
-   */
-  public BigDecimal getRating() {
-    return rating;
-  }
+	/**
+	 * @param fileLocation the fileLocation to set
+	 */
+	public void setFileLocation(String fileLocation) {
+		this.fileLocation = fileLocation;
+	}
 
-  /**
-   * @param rating the rating to set
-   */
-  public void setRating(BigDecimal rating) {
-    this.rating = rating;
-  }
+	/**
+	 * @return the year
+	 */
+	public Integer getYear() {
+		return year;
+	}
 
-  /**
-   * @return the summary
-   */
-  public String getSummary() {
-    return summary;
-  }
+	/**
+	 * @param year the year to set
+	 */
+	public void setYear(Integer year) {
+		this.year = year;
+	}
 
-  /**
-   * @param summary the summary to set
-   */
-  public void setSummary(String summary) {
-    this.summary = summary;
-  }
+	/**
+	 * @return the rating
+	 */
+	public BigDecimal getRating() {
+		return rating;
+	}
 
-  /**
-   * @return the genres
-   */
-  public List<String> getGenres() {
-    return genres;
-  }
+	/**
+	 * @param rating the rating to set
+	 */
+	public void setRating(BigDecimal rating) {
+		this.rating = rating;
+	}
 
-  /**
-   * @param genres the genres to set
-   */
-  public void setGenres(List<String> genres) {
-    this.genres = genres;
-  }
+	/**
+	 * @return the summary
+	 */
+	public String getSummary() {
+		return summary;
+	}
 
-  /**
-   * @return the startDate
-   */
-  public LocalDate getStartDate() {
-    return startDate;
-  }
+	/**
+	 * @param summary the summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 
-  /**
-   * @param startDate the startDate to set
-   */
-  public void setStartDate(LocalDate startDate) {
-    this.startDate = startDate;
-  }
+	/**
+	 * @return the genres
+	 */
+	public List<String> getGenres() {
+		return genres;
+	}
 
-  /**
-   * @return the directors
-   */
-  public List<String> getDirectors() {
-    return directors;
-  }
+	/**
+	 * @param genres the genres to set
+	 */
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
+	}
 
-  /**
-   * @param directors the directors to set
-   */
-  public void setDirectors(List<String> directors) {
-    this.directors = directors;
-  }
+	/**
+	 * @return the startDate
+	 */
+	public LocalDate getStartDate() {
+		return startDate;
+	}
 
-  /**
-   * @return the actors
-   */
-  public List<String> getActors() {
-    return actors;
-  }
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
 
-  /**
-   * @param actors the actors to set
-   */
-  public void setActors(List<String> actors) {
-    this.actors = actors;
-  }
+	/**
+	 * @return the directors
+	 */
+	public List<String> getDirectors() {
+		return directors;
+	}
 
-  /**
-   * @return the writers
-   */
-  public List<String> getWriters() {
-    return writers;
-  }
+	/**
+	 * @param directors the directors to set
+	 */
+	public void setDirectors(List<String> directors) {
+		this.directors = directors;
+	}
 
-  /**
-   * @param writers the writers to set
-   */
-  public void setWriters(List<String> writers) {
-    this.writers = writers;
-  }
+	/**
+	 * @return the actors
+	 */
+	public List<String> getActors() {
+		return actors;
+	}
 
-  /**
-   * @return the user
-   */
-  public String getUser() {
-    return user;
-  }
+	/**
+	 * @param actors the actors to set
+	 */
+	public void setActors(List<String> actors) {
+		this.actors = actors;
+	}
 
-  /**
-   * @param user the user to set
-   */
-  public void setUser(String user) {
-    this.user = user;
-  }
+	/**
+	 * @return the writers
+	 */
+	public List<String> getWriters() {
+		return writers;
+	}
 
-    public void setLibrary(String library) {
-        this.library = library;
-    }
+	/**
+	 * @param writers the writers to set
+	 */
+	public void setWriters(List<String> writers) {
+		this.writers = writers;
+	}
 
-    public String getLibrary() {
-        return library;
-    }
+	/**
+	 * @return the user
+	 */
+	public String getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public void setLibrary(String library) {
+		this.library = library;
+	}
+
+	public String getLibrary() {
+		return library;
+	}
 }
 

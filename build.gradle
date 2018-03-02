@@ -3,16 +3,14 @@ allprojects {
     version = '1.0.0-SNAPSHOT'
 }
 
-    subprojects {
-        apply plugin: 'java'
-        repositories {
-            maven {
-                url  "https://jcenter.bintray.com"
-            }
-        }
-        sourceCompatibility = 1.8
-
-        dependencies {
-            testCompile 'junit:junit:4.12'
-        }
+subprojects {
+    apply plugin: 'java'
+    repositories {
+        mavenCentral()
     }
+    sourceCompatibility = 1.8
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+}

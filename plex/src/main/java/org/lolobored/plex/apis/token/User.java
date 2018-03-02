@@ -12,19 +12,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private String authentication_token;
+	private String authentication_token;
 
-    /**
-     * @return the authentication_token
-     */
-    public String getAuthentication_token() {
-        return authentication_token;
-    }
+	/**
+	 * @return the authentication_token
+	 */
+	public String getAuthentication_token() {
+		return authentication_token;
+	}
 
-    /**
-     * @param authentication_token the authentication_token to set
-     */
-    public void setAuthentication_token(String authentication_token) {
-        this.authentication_token = authentication_token;
-    }
+	/**
+	 * @param authentication_token the authentication_token to set
+	 */
+	public void setAuthentication_token(String authentication_token) {
+		this.authentication_token = authentication_token;
+	}
 }
