@@ -3,28 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.lolobored.plex.objects.metadata;
+
+package org.lolobored.plex.apis.token;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
+ *
  * @author laurentlaborde
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Part {
-    private String file;
+public class AccessToken {
+  private User user;
 
-    /**
-     * @return the file
-     */
-    public String getFile() {
-        return file;
-    }
+  /**
+   * @return the user
+   */
+  public User getUser() {
+    return user;
+  }
 
-    /**
-     * @param file the file to set
-     */
-    public void setFile(String file) {
-        this.file = file;
-    }
+  /**
+   * @param user the user to set
+   */
+  public void setUser(User user) {
+    this.user = user;
+  }
 }
