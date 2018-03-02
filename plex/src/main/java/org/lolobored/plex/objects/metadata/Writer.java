@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.lolobored.objects.metadata;
+package org.lolobored.plex.objects.metadata;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,7 +13,7 @@ import java.math.BigInteger;
  * @author laurentlaborde
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Director {
+public class Writer {
     private BigInteger id;
     private String filter;
     private String tag;

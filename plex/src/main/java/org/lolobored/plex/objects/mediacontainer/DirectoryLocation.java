@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.lolobored.objects.metadata;
+package org.lolobored.plex.objects.mediacontainer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,10 +13,9 @@ import java.math.BigInteger;
  * @author laurentlaborde
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Writer {
+public class DirectoryLocation {
     private BigInteger id;
-    private String filter;
-    private String tag;
+    private String path;
 
     /**
      * @return the id
@@ -33,30 +32,16 @@ public class Writer {
     }
 
     /**
-     * @return the filter
+     * @return the path
      */
-    public String getFilter() {
-        return filter;
+    public String getPath() {
+        return path;
     }
 
     /**
-     * @param filter the filter to set
+     * @param path the path to set
      */
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
-
-    /**
-     * @return the tag
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * @param tag the tag to set
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

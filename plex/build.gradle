@@ -1,4 +1,5 @@
 dependencies {
+    compile 'commons-lang:commons-lang3:3.4'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
     compile project(':http')

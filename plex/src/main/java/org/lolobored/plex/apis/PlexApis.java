@@ -1,17 +1,20 @@
 package org.lolobored.plex.apis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.lolobored.objects.mediacontainer.Directory;
-import org.lolobored.objects.mediacontainer.MediaType;
-import org.lolobored.objects.mediacontainer.Section;
-import org.lolobored.objects.metadata.Metadata;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.lolobored.http.HttpException;
 import org.lolobored.http.HttpUtil;
+import org.lolobored.model.*;
 import org.lolobored.plex.apis.token.AccessToken;
+import org.lolobored.plex.objects.mediacontainer.Directory;
+import org.lolobored.plex.objects.mediacontainer.MediaType;
+import org.lolobored.plex.objects.mediacontainer.Section;
+import org.lolobored.plex.objects.metadata.MediaPlex;
+import org.lolobored.plex.objects.metadata.Metadata;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,60 +41,88 @@ public class PlexApis {
         return token.getUser().getAuthentication_token();
     }
 
-    public static Section fetchAllLibraries(String plexUrl, String token, boolean bypassSSL) throws HttpException, IOException {
-        Map<String, String> httpHeaders = getPlexHttpHeaders(token);
-
-        String librariesGet = HttpUtil.getInstance(bypassSSL).get(String.format("%s/library/sections", plexUrl), httpHeaders);
-        Section libraries = mapper.readValue(librariesGet, Section.class);
-        return libraries;
-    }
-
-    public static List<Section> fetchMovieLibrariesDetails(String plexUrl, Section allLibraries, String token, boolean bypassSSL) throws HttpException, IOException {
-        List<Section> movies= new ArrayList<>();
-        Map<String, String> httpHeaders = getPlexHttpHeaders(token);
-
-        for (Directory directory : allLibraries.getMediaContainer().getDirectory()) {
+    public static List<Movie> exploreMovies(String baseUrl, Section mediaLibraries, String token, String user, boolean bypassSSL) throws HttpException, IOException {
+        List<Movie> movies = new ArrayList();
+        for (Directory directory : mediaLibraries.getMediaContainer().getDirectory()) {
             if (MediaType.MOVIE_TYPE.equals(directory.getType())) {
-                String currentSection = HttpUtil.getInstance(bypassSSL).get(String.format("%s/library/sections/%s/all", plexUrl, directory.getKey().toString()), httpHeaders);
-                Section movieSection = mapper.readValue(currentSection, Section.class);
-                movies.add(movieSection);
+                String moviesJson= HttpUtil.getInstance(bypassSSL).get(baseUrl + "/library/sections/" + directory.getKey().toString() + "/all", getPlexHttpHeaders(token));
+                Section moviesSection = mapper.readValue(moviesJson, Section.class);
+                for (Metadata metadata : moviesSection.getMediaContainer().getMetadata()) {
+
+                    for (MediaPlex plexMedia : metadata.getMedia()) {
+                        Movie movie = new Movie();
+                        loadMediaInfo(movie, metadata, plexMedia, user);
+                        movies.add(movie);
+                    }
+                }
             }
         }
         return movies;
     }
 
-    public static List<Section> fetchTvshowsLibrariesDetails(String plexUrl, Section allLibraries, String token, boolean bypassSSL) throws HttpException, IOException {
-        List<Section> tvshows= new ArrayList<>();
-        Map<String, String> httpHeaders = getPlexHttpHeaders(token);
-
-        for (Directory directory : allLibraries.getMediaContainer().getDirectory()) {
+    public static List<Episode> exploreTvShows(String baseUrl, Section mediaLibraries, String token, String user, boolean bypassSSL) throws HttpException, IOException {
+        List<Episode> episodesList = new ArrayList();
+        Season season;
+        Show show;
+        for (Directory directory : mediaLibraries.getMediaContainer().getDirectory()) {
             if (MediaType.TV_SHOW_TYPE.equals(directory.getType())) {
-                String currentSection = HttpUtil.getInstance(bypassSSL).get(String.format("%s/library/sections/%s/all", plexUrl, directory.getKey().toString()), httpHeaders);
-                Section tvshowsSection = mapper.readValue(currentSection, Section.class);
-                tvshows.add(tvshowsSection);
+                String tvShowsJson = HttpUtil.getInstance(bypassSSL).get(baseUrl + "/library/sections/" + directory.getKey().toString() + "/all", getPlexHttpHeaders(token));
+                Section tvshows = mapper.readValue(tvShowsJson, Section.class);
+                for (Metadata showMetadata : tvshows.getMediaContainer().getMetadata()) {
+                    show = parseShow(showMetadata);
+
+                    String seasonsJson = HttpUtil.getInstance(bypassSSL).get(baseUrl + "/"+ showMetadata.getKey().toString(), getPlexHttpHeaders(token));
+                    Section seasons = mapper.readValue(seasonsJson, Section.class);
+                    for (Metadata seasonMedata : seasons.getMediaContainer().getMetadata()) {
+                        season = new Season();
+                        season.setSeasonNumber(seasonMedata.getIndex());
+                        String episodesJson = HttpUtil.getInstance(bypassSSL).get(baseUrl + "/"+  seasonMedata.getKey().toString(), getPlexHttpHeaders(token));
+                        Section episodes = mapper.readValue(episodesJson, Section.class);
+                        for (Metadata episodeMetadata : episodes.getMediaContainer().getMetadata()) {
+
+                            for (MediaPlex plexMedia : episodeMetadata.getMedia()) {
+                                Episode episode = new Episode();
+                                loadMediaInfo(episode, episodeMetadata, plexMedia, user);
+                                episode.setSeason(season);
+                                episode.setShow(show);
+                                episode.setEpisode(episodeMetadata.getIndex());
+                                episodesList.add(episode);
+                            }
+                        }
+
+                    }
+                }
             }
         }
-        return tvshows;
+        return episodesList;
     }
 
-//    public static List<Section> fetchTvshowSeasonList(String plexUrl, Section showSection, String token, boolean bypassSSL) throws HttpException, IOException {
-//        List<Section> tvshowsSeasons= new ArrayList<>();
-//        Map<String, String> httpHeaders = getPlexHttpHeaders(token);
-//
-//        for (Metadata showMetadata : showsMetadata) {
-//            String seasonsSectionJson = HttpUtil.getInstance(bypassSSL).get(plexUrl + "/" + showMetadata.getKey().toString(), httpHeaders);
-//            Section seasonsSection = mapper.
-//            tvshowsSeasons.add(seasonsSection);
-//        }
-//        for (Directory directory : allLibraries.getMediaContainer().getDirectory()) {
-//            if (MediaType.TV_SHOW_TYPE.equals(directory.getType())) {
-//                String currentSection = HttpUtil.getInstance(bypassSSL).get(String.format("%s/library/sections/%s/all", plexUrl, directory.getKey().toString()), httpHeaders);
-//                Section tvshowsSection = mapper.readValue(currentSection, Section.class);
-//                tvshows.add(tvshowsSection);
-//            }
-//        }
-//        return tvshows;
-//    }
+    private static Show parseShow(Metadata metadata) {
+        Show show = new Show();
+        show.setShowTitle(metadata.getTitle());
+        show.setContentRating(metadata.getContentRating());
+        show.setRating(metadata.getRating());
+        if (metadata.getOriginallyAvailableAt() != null) {
+            show.setStartDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
+        }
+        show.setStudio(metadata.getStudio());
+        show.setSummary(metadata.getSummary());
+        show.setYear(metadata.getYear());
+        return show;
+    }
+
+    private static void loadMediaInfo(Media media, Metadata metadata, MediaPlex plexMedia, String user) {
+        media.setFileLocation(plexMedia.getPart().get(0).getFile());
+        media.setRating(metadata.getRating());
+        media.setSummary(metadata.getSummary());
+        media.setTitle(metadata.getTitle());
+        media.setYear(metadata.getYear());
+        media.setUser(user);
+        if (metadata.getOriginallyAvailableAt() != null) {
+            media.setStartDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
+        }
+
+    }
 
     private static Map<String, String> getPlexHttpHeaders(String token){
         Map<String, String> httpHeaders = new HashMap();
