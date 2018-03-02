@@ -34,9 +34,7 @@ public class PlexApis {
         System.out.println(token.getUser().getAuthentication_token());
     }
 
-    public static void main(String[] args) throws HttpException, IOException {
-        authenticate("laurent.laborde", "02Guelarde");
-    }
+    
 
     
 }
