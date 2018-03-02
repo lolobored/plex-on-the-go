@@ -14,3 +14,4 @@ http/out
 /plex-apis/build/
 plex/build
 plex/plex-apis/out
+plex/plex-apis/build

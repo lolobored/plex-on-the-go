@@ -6,7 +6,9 @@ allprojects {
     subprojects {
         apply plugin: 'java'
         repositories {
-            mavenCentral()
+            maven {
+                url  "https://jcenter.bintray.com"
+            }
         }
         sourceCompatibility = 1.8
 

@@ -2,7 +2,7 @@ package org.lolobored.plex.apis;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.lolobored.http.HttpClient;
+import org.lolobored.http.HttpUtil;
 import org.lolobored.http.HttpException;
 
 import java.util.HashMap;
@@ -17,18 +17,19 @@ public class PlexApis {
     public static void authenticate(String userName, String password) throws HttpException {
 
         Map<String, String> httpHeader = new HashMap();
-        httpHeader.put("Content-Type", HttpClient.FORM_URLENCODED);
+        httpHeader.put("Content-Type", HttpUtil.FORM_URLENCODED);
         httpHeader.put("X-Plex-Client-Identifier", "APP1");
         httpHeader.put("charset", "utf-8");
 
-        String urlParameters = "user[login]=" + userName + "&user[password]=" + password;
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
         nameValuePairs.add(new BasicNameValuePair("user[login]", userName));
         nameValuePairs.add(new BasicNameValuePair("user[password]", password));
-        HttpClient.postUrlEncoded(plexUrl, nameValuePairs, httpHeader, false);
-
+        String response = HttpUtil.getInstance(true).postUrlEncoded(plexUrl, nameValuePairs, httpHeader);
+        System.out.println(response);
     }
+
+    
 }
 
 

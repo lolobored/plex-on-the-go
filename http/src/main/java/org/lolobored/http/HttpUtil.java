@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.client.HttpClient;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -22,14 +23,14 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The <code>HttpClient</code> is ... //TODO document class header
+ * The <code>HttpUtil</code> is ... //TODO document class header
  */
-public class HttpClient {
+public class HttpUtil {
 
     public static final String HTTP_GET = "GET";
     public static final String HTTP_PUT = "PUT";
@@ -37,34 +38,49 @@ public class HttpClient {
     public static final String HTTP_DELETE = "DELETE";
 
     public static final String FORM_URLENCODED= "application/x-www-form-urlencoded";
+    
+    private static Map<Boolean, HttpUtil> instance= new HashMap();
+    private static HttpClient httpClient;
 
-
-    public static String get(String url, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
-
-        return callHttp(url, "", null, HTTP_GET, httpHeaders, disableSSL);
+    protected HttpUtil(boolean disableSSL) throws HttpException {
+        httpClient= getHttpClient(disableSSL);
     }
 
-    public static String put(String url, String request, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
-
-        return callHttp(url, request,null, HTTP_PUT, httpHeaders, disableSSL);
+    public static synchronized final HttpUtil getInstance(Boolean disableSSL) throws HttpException {
+        HttpUtil httpUtil= instance.get(disableSSL);
+        if (httpUtil == null){
+            httpUtil= new HttpUtil(disableSSL);
+            instance.put(disableSSL, httpUtil);
+        }
+        return httpUtil;
     }
 
-    public static String post(String url, String request, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
+    public String get(String url, Map<String, String> httpHeaders) throws HttpException {
 
-        return callHttp(url, request, null, HTTP_POST, httpHeaders, disableSSL);
+        return callHttp(url, "", null, HTTP_GET, httpHeaders);
     }
 
-    public static String postUrlEncoded(String url, List<NameValuePair> paramsPair, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
+    public String put(String url, String request, Map<String, String> httpHeaders) throws HttpException {
 
-        return callHttp(url, null, paramsPair, HTTP_POST, httpHeaders, disableSSL);
+        return callHttp(url, request,null, HTTP_PUT, httpHeaders);
     }
 
-    public static String delete(String url, Map<String, String> httpHeaders, boolean disableSSL) throws HttpException {
+    public String post(String url, String request, Map<String, String> httpHeaders) throws HttpException {
 
-        return callHttp(url, "", null, HTTP_DELETE, httpHeaders, disableSSL);
+        return callHttp(url, request, null, HTTP_POST, httpHeaders);
     }
 
-    private static HttpRequestBase retrieveHttpRequestBase(String url, String operationType) throws HttpException {
+    public String postUrlEncoded(String url, List<NameValuePair> paramsPair, Map<String, String> httpHeaders) throws HttpException {
+
+        return callHttp(url, null, paramsPair, HTTP_POST, httpHeaders);
+    }
+
+    public String delete(String url, Map<String, String> httpHeaders) throws HttpException {
+
+        return callHttp(url, "", null, HTTP_DELETE, httpHeaders);
+    }
+
+    private HttpRequestBase retrieveHttpRequestBase(String url, String operationType) throws HttpException {
         switch (operationType) {
             case HTTP_GET:
                 return new HttpGet(url);
@@ -80,10 +96,9 @@ public class HttpClient {
 
     }
 
-    private static String callHttp(String url, String request, List<NameValuePair> paramsPair, String operationType, Map<String, String> httpHeader, boolean disableSSL) throws HttpException {
+    private String callHttp(String url, String request, List<NameValuePair> paramsPair, String operationType, Map<String, String> httpHeader) throws HttpException {
         String httpResponse = "";
         HttpRequestBase httpOperation = retrieveHttpRequestBase(url, operationType);
-        org.apache.http.client.HttpClient client = getHttpClient(disableSSL);
         for (Map.Entry<String, String> entrySet : httpHeader.entrySet()) {
             httpOperation.setHeader(entrySet.getKey(), entrySet.getValue());
         }
@@ -104,7 +119,7 @@ public class HttpClient {
             }
 
 
-            HttpResponse response = client.execute(httpOperation);
+            HttpResponse response = httpClient.execute(httpOperation);
             httpResponse = IOUtils.toString(response.getEntity().getContent());
             IOUtils.closeQuietly(response.getEntity().getContent());
             if (!(response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299)) {
@@ -117,7 +132,7 @@ public class HttpClient {
         }
     }
 
-    private static org.apache.http.client.HttpClient getHttpClient(boolean disableSSL) throws HttpException {
+    private HttpClient getHttpClient(boolean disableSSL) throws HttpException {
         if (!disableSSL) {
             return HttpClientBuilder.create().build();
         } else {
@@ -148,9 +163,9 @@ public class HttpClient {
                 schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
                 schemeRegistry.register(httpsScheme);
 
-                // apache HttpClient version >4.2 should use BasicClientConnectionManager
+                // apache HttpUtil version >4.2 should use BasicClientConnectionManager
                 ClientConnectionManager cm = new SingleClientConnManager(schemeRegistry);
-                org.apache.http.client.HttpClient httpClient = new DefaultHttpClient(cm);
+                HttpClient httpClient = new DefaultHttpClient(cm);
                 HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
                 return httpClient;
             } catch (KeyManagementException err) {
