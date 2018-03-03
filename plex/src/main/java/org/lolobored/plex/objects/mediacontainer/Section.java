@@ -24,7 +24,7 @@ public class Section {
 	}
 
 	/**
-	 * @param MediaContainer the MediaContainer to set
+	 * @param mediaContainer the MediaContainer to set
 	 */
 	public void setMediaContainer(MediaContainer mediaContainer) {
 		this.mediaContainer = mediaContainer;

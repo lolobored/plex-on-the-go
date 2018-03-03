@@ -141,7 +141,7 @@ public class PlexApis {
 		media.setShow(show);
 		media.setEpisode(metadata.getIndex());
 		if (metadata.getOriginallyAvailableAt() != null) {
-			media.setStartDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
+			media.setReleaseDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
 		}
 
 	}

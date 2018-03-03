@@ -1,21 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.lolobored.plex.apis.token;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * @author laurentlaborde
+ * The AccessToken class is the class returned by Plex when authenticating
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessToken {
 	private User user;
 
 	/**
+	 * Returns the user
 	 * @return the user
 	 */
 	public User getUser() {
@@ -23,6 +18,7 @@ public class AccessToken {
 	}
 
 	/**
+	 * Sets the user
 	 * @param user the user to set
 	 */
 	public void setUser(User user) {

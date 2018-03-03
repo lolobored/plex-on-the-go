@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Contains every information about a tvshow in Plex
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Show {
 

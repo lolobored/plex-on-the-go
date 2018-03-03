@@ -23,15 +23,7 @@ public class Test {
 
 		properties.load(Test.class.getResourceAsStream(respath));
 
-		// delete all existing media for the user
-		Search search = new Search();
-		Query allMediaByUser = new Query();
-		Bool boolQuery = new Bool();
-		Filters filters = new Filters();
-		filters.addUser(properties.getProperty("username"));
-		allMediaByUser.setBool(boolQuery);
-		search.setQuery(allMediaByUser);
-		search.getQuery().getBool().setMust(filters.getFiltersAsMust());
+
 
 
 		String token = PlexApis.authenticate(properties.getProperty("username"), properties.getProperty("password"));

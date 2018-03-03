@@ -10,6 +10,11 @@ subprojects {
     }
     sourceCompatibility = 1.8
 
+    javadoc {
+        source = sourceSets.main.allJava
+        classpath = configurations.compile
+    }
+
     dependencies {
         testCompile 'junit:junit:4.12'
     }

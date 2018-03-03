@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.lolobored.plex.elasticsearch.filters.Filter;
 
 /**
- * Bool is supposed to be used in Bool search in elastic search
+ * Must is supposed to be used in Bool search in elastic search
+ * It represents an AND condition
  * @see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-bool-query.html">Bool Query</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

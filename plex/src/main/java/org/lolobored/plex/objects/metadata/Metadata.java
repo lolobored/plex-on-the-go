@@ -340,7 +340,7 @@ public class Metadata {
 	}
 
 	/**
-	 * @param Media the Media to set
+	 * @param media the Media to set
 	 */
 	public void setMedia(List<MediaPlex> media) {
 		this.media = media;
@@ -354,7 +354,7 @@ public class Metadata {
 	}
 
 	/**
-	 * @param Director the Director to set
+	 * @param director the Director to set
 	 */
 	public void setDirector(List<Director> director) {
 		this.director = director;
@@ -368,7 +368,7 @@ public class Metadata {
 	}
 
 	/**
-	 * @param Writer the Writer to set
+	 * @param writer the Writer to set
 	 */
 	public void setWriter(List<Writer> writer) {
 		this.writer = writer;

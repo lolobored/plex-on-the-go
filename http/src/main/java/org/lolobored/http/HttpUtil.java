@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The <code>HttpUtil</code> is ... //TODO document class header
+ * HttpUtil is a utility class to interact with any HTTP server
  */
 public class HttpUtil {
 
@@ -42,10 +42,24 @@ public class HttpUtil {
 	private static Map<Boolean, HttpUtil> instance = new HashMap();
 	private static HttpClient httpClient;
 
+	/**
+	 * Create an HttpUtil class
+	 * Handling SSL or not
+	 *
+	 * @param disableSSL
+	 * @throws HttpException
+	 */
 	protected HttpUtil(boolean disableSSL) throws HttpException {
 		httpClient = getHttpClient(disableSSL);
 	}
 
+	/**
+	 * Multiton management to ease retrieval of an SSL-HTTP compliant utility or not
+	 *
+	 * @param bypassSSL defines whether or not we want to handle SSL
+	 * @return the relative HttpUtil (SSL compliant or not)
+	 * @throws HttpException
+	 */
 	public static synchronized final HttpUtil getInstance(Boolean bypassSSL) throws HttpException {
 		HttpUtil httpUtil = instance.get(Boolean.valueOf(bypassSSL));
 		if (httpUtil == null) {
@@ -55,31 +69,82 @@ public class HttpUtil {
 		return httpUtil;
 	}
 
+	/**
+	 * Performs a GET onto the HTTP server
+	 *
+	 * @param url         the URL to call
+	 * @param httpHeaders a Map object representing the HTTP headers to be sent with the operation
+	 * @return JSON response from the server
+	 * @throws HttpException
+	 */
 	public String get(String url, Map<String, String> httpHeaders) throws HttpException {
 
 		return callHttp(url, "", null, HTTP_GET, httpHeaders);
 	}
 
+	/**
+	 * Performs a PUT onto the HTTP server
+	 *
+	 * @param url         the URL to call
+	 * @param request     the JSON request to be performed
+	 * @param httpHeaders a Map object representing the HTTP headers to be sent with the operation
+	 * @throws HttpException
+	 * @return JSON response from the server
+	 */
 	public String put(String url, String request, Map<String, String> httpHeaders) throws HttpException {
 
 		return callHttp(url, request, null, HTTP_PUT, httpHeaders);
 	}
 
+	/**
+	 * Performs a POST onto the HTTP server
+	 *
+	 * @param url         the URL to call
+	 * @param request     the JSON request to be performed
+	 * @param httpHeaders a Map object representing the HTTP headers to be sent with the operation
+	 * @throws HttpException
+	 * @return JSON response from the server
+	 */
 	public String post(String url, String request, Map<String, String> httpHeaders) throws HttpException {
 
 		return callHttp(url, request, null, HTTP_POST, httpHeaders);
 	}
 
+	/**
+	 * Performs a POST Using URL-ENCODED format onto the HTTP server (used for Plex authentication)
+	 *
+	 * @param url         the URL to call
+	 * @param paramsPair  the key/value representation of the URL-ENCODED format
+	 * @param httpHeaders a Map object representing the HTTP headers to be sent with the operation
+	 * @throws HttpException
+	 * @return JSON response from the server
+	 */
 	public String postUrlEncoded(String url, List<NameValuePair> paramsPair, Map<String, String> httpHeaders) throws HttpException {
 
 		return callHttp(url, null, paramsPair, HTTP_POST, httpHeaders);
 	}
 
+	/**
+	 * Performs a DELETE onto the HTTP server
+	 *
+	 * @param url         the URL to call
+	 * @param httpHeaders a Map object representing the HTTP headers to be sent with the operation
+	 * @return JSON response from the server
+	 * @throws HttpException
+	 */
 	public String delete(String url, Map<String, String> httpHeaders) throws HttpException {
 
 		return callHttp(url, "", null, HTTP_DELETE, httpHeaders);
 	}
 
+	/**
+	 * Utility to get the appropriate HTTP Client object based on the operation
+	 *
+	 * @param url           the URL to call
+	 * @param operationType The operation to perform (GET/POST...)
+	 * @return
+	 * @throws HttpException
+	 */
 	private HttpRequestBase retrieveHttpRequestBase(String url, String operationType) throws HttpException {
 		switch (operationType) {
 			case HTTP_GET:
@@ -96,17 +161,33 @@ public class HttpUtil {
 
 	}
 
-	private String callHttp(String url, String request, List<NameValuePair> paramsPair, String operationType, Map<String, String> httpHeader) throws HttpException {
+	/**
+	 * Centralized HTTP call (used indistinctively for GET / POST..)
+	 *
+	 * @param url           the URL to call
+	 * @param request       the JSON request to be performed
+	 * @param paramsPair    the key/value representation of the URL-ENCODED format
+	 * @param httpHeaders   a Map object representing the HTTP headers to be sent with the operation
+	 * @param operationType the operation to perform (GET/POST...)
+	 * @return JSON response from the server
+	 * @throws HttpException
+	 */
+	private String callHttp(String url, String request, List<NameValuePair> paramsPair, String operationType, Map<String, String> httpHeaders) throws HttpException {
 		String httpResponse = "";
+		// retrieve the relevant HTTP Client object based on the operation and the URL
 		HttpRequestBase httpOperation = retrieveHttpRequestBase(url, operationType);
-		for (Map.Entry<String, String> entrySet : httpHeader.entrySet()) {
+
+		// Maps the header
+		for (Map.Entry<String, String> entrySet : httpHeaders.entrySet()) {
 			httpOperation.setHeader(entrySet.getKey(), entrySet.getValue());
 		}
 
 		try {
-
+			// In case of post and put we need to set a body
 			if (httpOperation instanceof HttpPost) {
-				if (FORM_URLENCODED.equals(httpHeader.getOrDefault("Content-Type", ""))) {
+
+				// URL-ENCODED or plain RAW JSON text is supported for POST
+				if (FORM_URLENCODED.equals(httpHeaders.getOrDefault("Content-Type", ""))) {
 					((HttpPost) httpOperation).setEntity(new UrlEncodedFormEntity(paramsPair));
 				} else {
 					StringEntity params = new StringEntity(request, "UTF-8");
@@ -117,10 +198,12 @@ public class HttpUtil {
 				((HttpPut) httpOperation).setEntity(params);
 			}
 
-
+			// Retrieving the response from the HTTP server
 			HttpResponse response = httpClient.execute(httpOperation);
 			httpResponse = IOUtils.toString(response.getEntity().getContent());
 			IOUtils.closeQuietly(response.getEntity().getContent());
+
+			// Success HTTP code is 2xx
 			if (!(response.getStatusLine().getStatusCode() >= 200 && response.getStatusLine().getStatusCode() <= 299)) {
 				throw new HttpException("HTTP call failed", request, httpResponse, url, response.getStatusLine().getStatusCode(), operationType);
 			}
@@ -131,11 +214,19 @@ public class HttpUtil {
 		}
 	}
 
+	/**
+	 * Utility to get an SSL compliant HTTP Client or not
+	 *
+	 * @param bypassSSL do we have to bypass SSL checks
+	 * @return hte relevant HTTP Client
+	 * @throws HttpException
+	 */
 	private HttpClient getHttpClient(boolean bypassSSL) throws HttpException {
 		if (!bypassSSL) {
 			return HttpClientBuilder.create().build();
 		} else {
 			try {
+				// Disable Hostname verification
 				HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 				SSLContext sslContext = SSLContext.getInstance("SSL");
 				// set up a TrustManager that trusts everything
@@ -146,12 +237,10 @@ public class HttpUtil {
 
 					public void checkClientTrusted(X509Certificate[] certs,
 																				 String authType) {
-
 					}
 
 					public void checkServerTrusted(X509Certificate[] certs,
 																				 String authType) {
-
 					}
 				}}, new SecureRandom());
 
@@ -174,6 +263,4 @@ public class HttpUtil {
 			}
 		}
 	}
-
-
 }

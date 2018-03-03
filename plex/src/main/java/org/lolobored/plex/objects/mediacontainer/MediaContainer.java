@@ -75,7 +75,7 @@ public class MediaContainer {
 	}
 
 	/**
-	 * @param Directory the Directory to set
+	 * @param directory the Directory to set
 	 */
 	public void setDirectory(List<Directory> directory) {
 		this.directory = directory;
