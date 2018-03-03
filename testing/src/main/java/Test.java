@@ -27,7 +27,7 @@ public class Test {
 
 
 		String token = PlexApis.authenticate(properties.getProperty("username"), properties.getProperty("password"));
-		ElasticSearch.deleteMedia(properties.getProperty("elasticSearchUrl"), search, true);
+		ElasticSearch.deleteMedia(properties.getProperty("elasticSearchUrl"), properties.getProperty("username"), true);
 
 		List<Media> movies = PlexApis.exploreMovies(properties.getProperty("plexUrl"), token, properties.getProperty("username"), true);
 		List<Media> episodes = PlexApis.exploreTvShows(properties.getProperty("plexUrl"), token, properties.getProperty("username"), true);
