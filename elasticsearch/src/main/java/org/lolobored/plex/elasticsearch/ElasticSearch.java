@@ -12,8 +12,8 @@ import org.lolobored.plex.elasticsearch.query.Bool;
 import org.lolobored.plex.elasticsearch.query.Query;
 import org.lolobored.plex.elasticsearch.query.Search;
 import org.lolobored.plex.elasticsearch.query.Sort;
-import org.lolobored.plex.elasticsearch.results.Result;
-import org.lolobored.plex.elasticsearch.results.Source;
+import org.lolobored.plex.elasticsearch.result.Result;
+import org.lolobored.plex.elasticsearch.result.Source;
 import org.lolobored.plex.model.Media;
 
 import java.io.IOException;

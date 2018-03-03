@@ -41,7 +41,7 @@ public class Must {
 	}
 
 	/**
-	 * Set a Bool additional filter (used to combine and and or)
+	 * Sets a Bool additional filter (used to combine and and or)
 	 * @param bool
 	 */
 	public void setBool(Bool bool) {
