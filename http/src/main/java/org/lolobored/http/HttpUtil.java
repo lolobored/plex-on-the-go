@@ -47,10 +47,10 @@ public class HttpUtil {
 	}
 
 	public static synchronized final HttpUtil getInstance(Boolean bypassSSL) throws HttpException {
-		HttpUtil httpUtil = instance.get(bypassSSL);
+		HttpUtil httpUtil = instance.get(Boolean.valueOf(bypassSSL));
 		if (httpUtil == null) {
 			httpUtil = new HttpUtil(bypassSSL);
-			instance.put(bypassSSL, httpUtil);
+			instance.put(Boolean.valueOf(bypassSSL), httpUtil);
 		}
 		return httpUtil;
 	}

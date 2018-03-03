@@ -1,8 +1,7 @@
-package org.lolobored.plex.elasticsearch.objects;
+package org.lolobored.plex.elasticsearch.results;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.lolobored.plex.model.Episode;
 
 import java.util.List;
 
@@ -13,4 +12,11 @@ public class Hits {
 	private List<Source> list;
 
 
+	public List<Source> getList() {
+		return list;
+	}
+
+	public void setList(List<Source> list) {
+		this.list = list;
+	}
 }

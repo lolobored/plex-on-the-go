@@ -1,4 +1,4 @@
-package org.lolobored.plex.elasticsearch.objects;
+package org.lolobored.plex.elasticsearch.results;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

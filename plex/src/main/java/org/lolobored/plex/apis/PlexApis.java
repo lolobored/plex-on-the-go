@@ -11,6 +11,7 @@ import org.lolobored.plex.model.*;
 import org.lolobored.plex.objects.mediacontainer.Directory;
 import org.lolobored.plex.objects.mediacontainer.MediaType;
 import org.lolobored.plex.objects.mediacontainer.Section;
+import org.lolobored.plex.objects.metadata.Genre;
 import org.lolobored.plex.objects.metadata.MediaPlex;
 import org.lolobored.plex.objects.metadata.Metadata;
 
@@ -42,8 +43,8 @@ public class PlexApis {
 		return token.getUser().getAuthentication_token();
 	}
 
-	public static List<Movie> exploreMovies(String baseUrl, String token, String user, boolean bypassSSL) throws HttpException, IOException {
-		List<Movie> movies = new ArrayList();
+	public static List<Media> exploreMovies(String baseUrl, String token, String user, boolean bypassSSL) throws HttpException, IOException {
+		List<Media> movies = new ArrayList();
 
 		String mediaLibrariesJson = HttpUtil.getInstance(bypassSSL).get(String.format("%s/library/sections", baseUrl), getPlexHttpHeaders(token));
 		Section mediaLibraries = mapper.readValue(mediaLibrariesJson, Section.class);
@@ -57,8 +58,8 @@ public class PlexApis {
 				for (Metadata metadata : moviesSection.getMediaContainer().getMetadata()) {
 
 					for (MediaPlex plexMedia : metadata.getMedia()) {
-						Movie movie = new Movie();
-						loadMediaInfo(movie, metadata, plexMedia, library, user);
+						Media movie = new Media();
+						loadMediaInfo(movie, Media.MOVIE_TYPE, metadata, plexMedia, null, null, library, user);
 						movies.add(movie);
 					}
 				}
@@ -67,8 +68,8 @@ public class PlexApis {
 		return movies;
 	}
 
-	public static List<Episode> exploreTvShows(String baseUrl, String token, String user, boolean bypassSSL) throws HttpException, IOException {
-		List<Episode> episodesList = new ArrayList();
+	public static List<Media> exploreTvShows(String baseUrl, String token, String user, boolean bypassSSL) throws HttpException, IOException {
+		List<Media> episodesList = new ArrayList();
 		Season season;
 		Show show;
 		String mediaLibrariesJson = HttpUtil.getInstance(bypassSSL).get(String.format("%s/library/sections", baseUrl), getPlexHttpHeaders(token));
@@ -91,11 +92,8 @@ public class PlexApis {
 						for (Metadata episodeMetadata : episodes.getMediaContainer().getMetadata()) {
 
 							for (MediaPlex plexMedia : episodeMetadata.getMedia()) {
-								Episode episode = new Episode();
-								loadMediaInfo(episode, episodeMetadata, plexMedia, library, user);
-								episode.setSeason(season);
-								episode.setShow(show);
-								episode.setEpisode(episodeMetadata.getIndex());
+								Media episode = new Media();
+								loadMediaInfo(episode, Media.EPISODE_TYPE, episodeMetadata, plexMedia, show, season, library, user);
 								episodesList.add(episode);
 							}
 						}
@@ -120,7 +118,8 @@ public class PlexApis {
 		return show;
 	}
 
-	private static void loadMediaInfo(Media media, Metadata metadata, MediaPlex plexMedia, String library, String user) {
+	private static void loadMediaInfo(Media media, String type, Metadata metadata, MediaPlex plexMedia, Show show, Season season, String library, String user) {
+		media.setType(type);
 		media.setFileLocation(plexMedia.getPart().get(0).getFile());
 		media.setRating(metadata.getRating());
 		media.setSummary(metadata.getSummary());
@@ -128,6 +127,19 @@ public class PlexApis {
 		media.setYear(metadata.getYear());
 		media.setUser(user);
 		media.setLibrary(library);
+
+		List<Genre> genresMeta= metadata.getGenre();
+		if (genresMeta!=null){
+			List<String> genres = new ArrayList<>();
+			for (Genre singleGenre: genresMeta){
+				genres.add(singleGenre.getTag());
+			}
+			media.setGenres(genres);
+		}
+
+		media.setSeason(season);
+		media.setShow(show);
+		media.setEpisode(metadata.getIndex());
 		if (metadata.getOriginallyAvailableAt() != null) {
 			media.setStartDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
 		}

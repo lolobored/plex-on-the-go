@@ -8,14 +8,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Media {
+public class Media{
 
 	@JsonIgnore
-	public final String EPISODE_TYPE = "episode";
+	public static final String EPISODE_TYPE = "episode";
 	@JsonIgnore
-	public final String MOVIE_TYPE = "movie";
+	public static final String MOVIE_TYPE = "movie";
 
-	protected String type;
+	private String type;
 	private String library;
 	private String user;
 	private String title;
@@ -28,171 +28,147 @@ public class Media {
 	private List<String> directors;
 	private List<String> actors;
 	private List<String> writers;
+	// tvshows only
+	private Show show;
+	private Season season;
+	private Integer episode;
 
-	protected Media() {
-
+	public String getType() {
+		return type;
 	}
 
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * @return the fileLocation
-	 */
-	public String getFileLocation() {
-		return fileLocation;
-	}
-
-	/**
-	 * @param fileLocation the fileLocation to set
-	 */
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
-	}
-
-	/**
-	 * @return the year
-	 */
-	public Integer getYear() {
-		return year;
-	}
-
-	/**
-	 * @param year the year to set
-	 */
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
-	/**
-	 * @return the rating
-	 */
-	public BigDecimal getRating() {
-		return rating;
-	}
-
-	/**
-	 * @param rating the rating to set
-	 */
-	public void setRating(BigDecimal rating) {
-		this.rating = rating;
-	}
-
-	/**
-	 * @return the summary
-	 */
-	public String getSummary() {
-		return summary;
-	}
-
-	/**
-	 * @param summary the summary to set
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	/**
-	 * @return the genres
-	 */
-	public List<String> getGenres() {
-		return genres;
-	}
-
-	/**
-	 * @param genres the genres to set
-	 */
-	public void setGenres(List<String> genres) {
-		this.genres = genres;
-	}
-
-	/**
-	 * @return the startDate
-	 */
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the directors
-	 */
-	public List<String> getDirectors() {
-		return directors;
-	}
-
-	/**
-	 * @param directors the directors to set
-	 */
-	public void setDirectors(List<String> directors) {
-		this.directors = directors;
-	}
-
-	/**
-	 * @return the actors
-	 */
-	public List<String> getActors() {
-		return actors;
-	}
-
-	/**
-	 * @param actors the actors to set
-	 */
-	public void setActors(List<String> actors) {
-		this.actors = actors;
-	}
-
-	/**
-	 * @return the writers
-	 */
-	public List<String> getWriters() {
-		return writers;
-	}
-
-	/**
-	 * @param writers the writers to set
-	 */
-	public void setWriters(List<String> writers) {
-		this.writers = writers;
-	}
-
-	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return user;
-	}
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
-		this.user = user;
+	public String getLibrary() {
+		return library;
 	}
 
 	public void setLibrary(String library) {
 		this.library = library;
 	}
 
-	public String getLibrary() {
-		return library;
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getFileLocation() {
+		return fileLocation;
+	}
+
+	public void setFileLocation(String fileLocation) {
+		this.fileLocation = fileLocation;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public BigDecimal getRating() {
+		return rating;
+	}
+
+	public void setRating(BigDecimal rating) {
+		this.rating = rating;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public List<String> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public List<String> getDirectors() {
+		return directors;
+	}
+
+	public void setDirectors(List<String> directors) {
+		this.directors = directors;
+	}
+
+	public List<String> getActors() {
+		return actors;
+	}
+
+	public void setActors(List<String> actors) {
+		this.actors = actors;
+	}
+
+	public List<String> getWriters() {
+		return writers;
+	}
+
+	public void setWriters(List<String> writers) {
+		this.writers = writers;
+	}
+
+	public Show getShow() {
+		return show;
+	}
+
+	public void setShow(Show show) {
+		this.show = show;
+	}
+
+	public Season getSeason() {
+		return season;
+	}
+
+	public void setSeason(Season season) {
+		this.season = season;
+	}
+
+	public Integer getEpisode() {
+		return episode;
+	}
+
+	public void setEpisode(Integer episode) {
+		this.episode = episode;
+	}
+
+	@JsonIgnore
+	public boolean isEpisode(){
+		return EPISODE_TYPE.equals(type);
+	}
+
+	@JsonIgnore
+	public boolean isMovie(){
+		return EPISODE_TYPE.equals(type);
 	}
 }
 

@@ -43,6 +43,8 @@ public class Metadata {
 	private String grandparentArt;
 	private String grandparentTheme;
 	private String originallyAvailableAt;
+	@JsonProperty("Genre")
+	private List<Genre> genre;
 	@JsonProperty("Media")
 	private List<MediaPlex> media;
 	@JsonProperty("Director")
@@ -442,4 +444,11 @@ public class Metadata {
 		this.contentRating = contentRating;
 	}
 
+	public List<Genre> getGenre() {
+		return genre;
+	}
+
+	public void setGenre(List<Genre> genre) {
+		this.genre = genre;
+	}
 }
