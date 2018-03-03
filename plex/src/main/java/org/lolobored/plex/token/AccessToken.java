@@ -1,4 +1,4 @@
-package org.lolobored.plex.apis.token;
+package org.lolobored.plex.token;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

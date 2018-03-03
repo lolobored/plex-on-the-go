@@ -2,16 +2,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.lolobored.http.HttpException;
-import org.lolobored.plex.apis.PlexApis;
+import org.lolobored.plex.PlexApis;
 import org.lolobored.plex.elasticsearch.ElasticSearch;
-import org.lolobored.plex.elasticsearch.filters.Filters;
-import org.lolobored.plex.elasticsearch.query.Bool;
-import org.lolobored.plex.elasticsearch.query.Query;
-import org.lolobored.plex.elasticsearch.query.Search;
 import org.lolobored.plex.model.Media;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 
 public class Test {
 
@@ -24,15 +21,11 @@ public class Test {
 		properties.load(Test.class.getResourceAsStream(respath));
 
 
-
-
 		String token = PlexApis.authenticate(properties.getProperty("username"), properties.getProperty("password"));
 		ElasticSearch.deleteMedia(properties.getProperty("elasticSearchUrl"), properties.getProperty("username"), true);
 
 		List<Media> movies = PlexApis.exploreMovies(properties.getProperty("plexUrl"), token, properties.getProperty("username"), true);
 		List<Media> episodes = PlexApis.exploreTvShows(properties.getProperty("plexUrl"), token, properties.getProperty("username"), true);
-
-
 
 		for (Media movie: movies){
 			ElasticSearch.insertMedia(properties.getProperty("elasticSearchUrl"), movie, true);
