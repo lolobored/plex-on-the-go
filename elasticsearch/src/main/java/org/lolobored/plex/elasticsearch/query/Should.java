@@ -2,6 +2,7 @@ package org.lolobored.plex.elasticsearch.query;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import org.lolobored.plex.elasticsearch.filters.Filter;
 import org.lolobored.plex.model.Media;
 
@@ -10,6 +11,7 @@ import org.lolobored.plex.model.Media;
  * It represents an OR condition
  * @see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.2/query-dsl-bool-query.html">Bool Query</a>
  */
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Should {
 
@@ -18,34 +20,5 @@ public class Should {
 
 	private Bool bool;
 
-	/**
-	 * Retrieve the single should filter
-	 * @return
-	 */
-	public Filter getFilter() {
-		return filter;
-	}
 
-	/**
-	 * Sets the single should filter
-	 * @param filter
-	 */
-	public void setFilter(Filter filter) {
-		this.filter = filter;
-	}
-
-	/**
-	 * Gets the Bool additional filter (used to combine and and or)
-	 * @return
-	 */
-	public Bool getBool() {
-		return bool;
-	}
-
-	/**
-	 * Sets the Bool additional filter (used to combine and and or)
-	 */
-	public void setBool(Bool bool) {
-		this.bool = bool;
-	}
 }
