@@ -1,6 +1,7 @@
 package org.lolobored.plex.elasticsearch.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.lolobored.plex.elasticsearch.query.Must;
 import org.lolobored.plex.elasticsearch.query.Should;
 import org.lolobored.plex.model.Media;

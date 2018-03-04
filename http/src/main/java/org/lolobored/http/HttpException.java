@@ -1,8 +1,13 @@
 package org.lolobored.http;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * Specific Exception for any HTTP calls
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class HttpException extends Exception {
 
 	private String request;
@@ -45,90 +50,12 @@ public class HttpException extends Exception {
 	 */
 	public HttpException(String message, String request, String response, String url, Integer statusCode, String operation, Throwable th) {
 		super(message, th);
-		this.setRequest(request);
-		this.setResponse(response);
-		this.setUrl(url);
-		this.setOperation(operation);
-		this.setHttpStatusCode(statusCode);
+		this.request= request;
+		this.response= response;
+		this.url= url;
+		this.operation= operation;
+		this.httpStatusCode= statusCode;
 	}
 
-	/**
-	 * Returns the request used in the HTTP call
-	 * @return
-	 */
-	public String getRequest() {
-		return request;
-	}
 
-	/**
-	 * Sets the request for [the HTTP call
-	 * @param request
-	 */
-	public void setRequest(String request) {
-		this.request = request;
-	}
-
-	/**
-	 * Gets the response by the HTTP server
-	 * @return
-	 */
-	public String getResponse() {
-		return response;
-	}
-
-	/**
-	 * Sets the response returned by the HTTP server
-	 * @param response
-	 */
-	public void setResponse(String response) {
-		this.response = response;
-	}
-
-	/**
-	 * Gets the URL called by the HTTP Utility
-	 * @return
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * Sets the URL called by the HTTP Utility
-	 * @param url
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
-	 * Gets the operation (GET/POST...)
-	 * @return
-	 */
-	public String getOperation() {
-		return operation;
-	}
-
-	/**
-	 * Sets the operation (GET/POST...)
-	 * @param operation
-	 */
-	public void setOperation(String operation) {
-		this.operation = operation;
-	}
-
-	/**
-	 * Retrieve the HTTP status code returned by the call
-	 * @return
-	 */
-	public Integer getHttpStatusCode() {
-		return httpStatusCode;
-	}
-
-	/**
-	 * Sets the HTTP code returned by the call
-	 * @param httpStatusCode
-	 */
-	public void setHttpStatusCode(Integer httpStatusCode) {
-		this.httpStatusCode = httpStatusCode;
-	}
 }

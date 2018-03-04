@@ -1,3 +1,7 @@
+plugins {
+    id "io.franzbecker.gradle-lombok" version "1.11"
+}
+
 allprojects {
     group = 'org.lolobored'
     version = '1.0.0-SNAPSHOT'
@@ -5,6 +9,8 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'io.franzbecker.gradle-lombok'
+
     repositories {
         mavenCentral()
     }
@@ -16,6 +22,7 @@ subprojects {
     }
 
     dependencies {
+        compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
         testCompile 'junit:junit:4.12'
     }
 }
