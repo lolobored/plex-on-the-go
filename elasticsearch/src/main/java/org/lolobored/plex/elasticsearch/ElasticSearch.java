@@ -67,7 +67,7 @@ public class ElasticSearch {
 	public static void deleteMedia(String elasticSearchUrl, String username, boolean bypassSSL) throws HttpException, JsonProcessingException {
 		try {
 			// Define a search for username
-			Search search = buildSearch(0,0);
+			Search search = buildSearch(null,null);
 			Filters filters = new Filters();
 			filters.addUser(username);
 			search.getQuery().getBool().setMust(filters.getFiltersAsMust());
@@ -86,7 +86,7 @@ public class ElasticSearch {
 			logger.fine(String.format("Response received from elasticsearch [%s]", response));
 		}
 		catch (HttpException err){
-			logger.info("Exception occured while attempting to delete: "+err.getResponse());
+			logger.info("Exception occurred while attempting to delete: "+err.getResponse());
 		}
 
 	}
@@ -155,7 +155,7 @@ public class ElasticSearch {
 	 * @param from the starting index for the objects
 	 * @return
 	 */
-	private static Search buildSearch(int size, int from){
+	private static Search buildSearch(Integer size, Integer from){
 		Search search = new Search();
 		search.setFrom(from);
 		search.setSize(size);
