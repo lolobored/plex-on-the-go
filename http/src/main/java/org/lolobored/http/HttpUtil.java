@@ -174,6 +174,7 @@ public class HttpUtil {
 	 */
 	private String callHttp(String url, String request, List<NameValuePair> paramsPair, String operationType, Map<String, String> httpHeaders) throws HttpException {
 		String httpResponse = "";
+		HttpResponse response = null;
 		// retrieve the relevant HTTP Client object based on the operation and the URL
 		HttpRequestBase httpOperation = retrieveHttpRequestBase(url, operationType);
 
@@ -199,7 +200,7 @@ public class HttpUtil {
 			}
 
 			// Retrieving the response from the HTTP server
-			HttpResponse response = httpClient.execute(httpOperation);
+			response = httpClient.execute(httpOperation);
 			httpResponse = IOUtils.toString(response.getEntity().getContent());
 			IOUtils.closeQuietly(response.getEntity().getContent());
 
@@ -211,6 +212,14 @@ public class HttpUtil {
 
 		} catch (IOException err) {
 			throw new HttpException("HTTP call failed due to IO Exception", request, httpResponse, url, null, operationType, err);
+		}
+		finally{
+			if (response != null) {
+				try {
+					IOUtils.closeQuietly(response.getEntity().getContent());
+				}
+				catch (Exception err){}
+			}
 		}
 	}
 
