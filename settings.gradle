@@ -4,4 +4,5 @@ include 'plex'
 include 'http'
 include 'elasticsearch'
 include 'testing'
+include 'plex-spring'
 
