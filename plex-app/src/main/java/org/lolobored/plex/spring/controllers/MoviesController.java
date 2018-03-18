@@ -1,26 +1,40 @@
 package org.lolobored.plex.spring.controllers;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.lolobored.http.HttpException;
-import org.lolobored.plex.PlexApis;
-import org.lolobored.plex.elasticsearch.ElasticSearch;
-import org.lolobored.plex.model.Media;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import org.lolobored.plex.model.Media;
+import org.lolobored.plex.spring.models.Search;
+import org.lolobored.plex.spring.models.User;
+import org.lolobored.plex.spring.services.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Properties;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping({"/movies"})
 public class MoviesController {
 
-    @GetMapping("/movies")
-    public void getMedia() throws IOException, HttpException {
 
+    @Autowired
+    MovieService movieService;
+
+    @GetMapping
+    public List<Media> getMovies()  {
+        return movieService.getMovies();
+    }
+
+    @PostMapping(path ={"/search"})
+    public List<Media> searchMovies(@RequestBody Search search)  {
+        return movieService.searchMovies(search);
+    }
+
+    @GetMapping(path ={"/genre"})
+    public List<String> getGenre()  {
+        return movieService.getGenres();
+    }
+
+    @GetMapping(path ={"/year"})
+    public List<Integer> getYears()  {
+        return movieService.getYears();
     }
 }
