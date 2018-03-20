@@ -36,6 +36,7 @@ public class HttpUtil {
 	public static final String HTTP_PUT = "PUT";
 	public static final String HTTP_POST = "POST";
 	public static final String HTTP_DELETE = "DELETE";
+	public static final String HTTP_HEAD = "HEAD";
 
 	public static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
 
@@ -67,6 +68,19 @@ public class HttpUtil {
 			instance.put(Boolean.valueOf(bypassSSL), httpUtil);
 		}
 		return httpUtil;
+	}
+
+	/**
+	 * Performs a GET onto the HTTP server
+	 *
+	 * @param url         the URL to call
+	 * @param httpHeaders a Map object representing the HTTP headers to be sent with the operation
+	 * @return JSON response from the server
+	 * @throws HttpException
+	 */
+	public String head(String url, Map<String, String> httpHeaders) throws HttpException {
+
+		return callHttp(url, "", null, HTTP_HEAD, httpHeaders);
 	}
 
 	/**
@@ -147,6 +161,8 @@ public class HttpUtil {
 	 */
 	private HttpRequestBase retrieveHttpRequestBase(String url, String operationType) throws HttpException {
 		switch (operationType) {
+			case HTTP_HEAD:
+				return new HttpHead(url);
 			case HTTP_GET:
 				return new HttpGet(url);
 			case HTTP_PUT:
@@ -194,7 +210,7 @@ public class HttpUtil {
 					StringEntity params = new StringEntity(request, "UTF-8");
 					((HttpPost) httpOperation).setEntity(params);
 				}
-			} else if (httpOperation instanceof HttpPut) {
+			} else if (httpOperation instanceof HttpPut && request != null) {
 				StringEntity params = new StringEntity(request, "UTF-8");
 				((HttpPut) httpOperation).setEntity(params);
 			}

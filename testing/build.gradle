@@ -1,4 +1,0 @@
-dependencies {
-    compile project(':plex')
-    compile project(':elasticsearch')
-}

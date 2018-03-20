@@ -19,6 +19,6 @@ public class Filter {
 	private Integer season;
 	@JsonProperty("show.showTitle")
 	private String showTitle;
-
+	private String fileLocation;
 
 }

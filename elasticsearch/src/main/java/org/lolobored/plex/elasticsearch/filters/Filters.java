@@ -79,6 +79,16 @@ public class Filters {
 	}
 
 	/**
+	 * Add a filter on the fileLocation
+	 * @param fileLocation
+	 */
+	public void addFileLocation(String fileLocation){
+		Filter filter = new Filter();
+		filter.setFileLocation(fileLocation);
+		this.addFilter(filter);
+	}
+
+	/**
 	 * helper to add any filter to the list of filter
 	 * @param filter
 	 */

@@ -1,8 +1,7 @@
 package org.lolobored.plex.spring.services.impl;
 
 import org.lolobored.http.HttpException;
-import org.lolobored.plex.PlexApis;
-import org.lolobored.plex.elasticsearch.ElasticSearch;
+import org.lolobored.plex.PlexService;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.models.Search;
 import org.lolobored.plex.spring.models.User;
@@ -18,8 +17,12 @@ import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private PlexService plexService;
 
 
     @Override
@@ -60,7 +63,7 @@ public class MovieServiceImpl implements MovieService {
         for (User user : users){
             if (user.isPlexTokenValidated()){
                 try {
-                    mediaList.addAll(PlexApis.exploreMovies("http://lolobored.local:32400",
+                    mediaList.addAll(plexService.exploreMovies("http://lolobored.local:32400",
                             user.getPlexToken(),
                             user.getPlexLogin(),
                             false));
