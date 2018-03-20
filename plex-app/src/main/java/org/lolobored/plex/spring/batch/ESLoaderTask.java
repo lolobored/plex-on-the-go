@@ -31,7 +31,7 @@ public class ESLoaderTask {
 	PlexService plexService;
 
 
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 1800000)
 	public void loadElasticSearch() {
 
 		List<User> users = userService.getUsers();
@@ -47,7 +47,7 @@ public class ESLoaderTask {
 					log.debug(String.format("User [%s] has a list of [%d] movies", user.getUserName(), movies.size()));
 
 					for (Media movie : movies) {
-						elasticSearchService.insertMedia(movie, "http://localhost:9200", true);
+						elasticSearchService.insertMedia(movie);
 						log.debug(String.format("Movie [%s][%s] was added", movie.getTitle(), movie.getFileLocation()));
 					}
 				} catch (HttpException e) {

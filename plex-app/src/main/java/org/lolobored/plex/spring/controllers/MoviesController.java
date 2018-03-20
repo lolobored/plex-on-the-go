@@ -18,13 +18,14 @@ public class MoviesController {
     @Autowired
     MovieService movieService;
 
-    @GetMapping
-    public List<Media> getMovies()  {
-        return movieService.getMovies();
+    @PostMapping
+    public List<Media> getMovies(String user)  {
+        return movieService.getMovies(user);
     }
 
     @PostMapping(path ={"/search"})
     public List<Media> searchMovies(@RequestBody Search search)  {
+
         return movieService.searchMovies(search);
     }
 
