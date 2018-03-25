@@ -2,6 +2,7 @@ package org.lolobored.plex.spring.services.impl;
 
 import org.lolobored.http.HttpException;
 import org.lolobored.plex.PlexService;
+import org.lolobored.plex.spring.batch.ESLoaderTask;
 import org.lolobored.plex.spring.models.User;
 import org.lolobored.plex.spring.repository.UserRepository;
 import org.lolobored.plex.spring.services.UserService;
@@ -21,12 +22,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private PlexService plexService;
 
+	@Autowired
+	private ESLoaderTask loaderTask;
+
 	@Override
 	public User addUser(User user) {
 		String plexToken = null;
 		// try to authenticate to Plex
 		try {
 			plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
+			loaderTask.loadElasticSearch();
 
 		} catch (HttpException | IOException e) {
 			// authentication failed
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
 		// try to authenticate to Plex
 		try {
 			plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
+			loaderTask.loadElasticSearch();
 
 		} catch (HttpException | IOException e) {
 			// authentication failed
