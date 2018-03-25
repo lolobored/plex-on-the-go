@@ -22,7 +22,7 @@ public interface PlexService {
 
     /**
      * Explore the movies libraries and returns a List of Media (later on to be inserted into Elastic Search)
-     * @param baseUrl the baseUrl for plex (ie http://localhost:32400)
+     * @param baseUrl the baseUrl for plex (ie http://lolobored.local:32400)
      * @param token the token retrieved during the authentication phase
      * @param user the user associated to that token
      * @param bypassSSL whether or not to bypass SSL check (set to true for self-generated certificates)
@@ -34,7 +34,7 @@ public interface PlexService {
 
     /**
      * Explore the tvshows libraries and returns a List of Media (later on to be inserted into Elastic Search)
-     * @param baseUrl the baseUrl for plex (ie http://localhost:32400)
+     * @param baseUrl the baseUrl for plex (ie http://lolobored.local:32400)
      * @param token the token retrieved during the authentication phase
      * @param user the user associated to that token
      * @param bypassSSL whether or not to bypass SSL check (set to true for self-generated certificates)
