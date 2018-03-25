@@ -71,7 +71,14 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	@Override
 	public List<Media> getAllMovies(String user) {
 		List<Media> result= new ArrayList();
-		repository.findAll().forEach(result::add);
+		Pageable pageRequest= new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
+		Page<Media> page= repository.findByUser(user,pageRequest);
+		result.addAll(page.getContent()) ;
+		for (int i=1; i< page.getTotalPages(); i++){
+			pageRequest = pageRequest.next();
+			page= repository.findByUser(user,pageRequest);
+			result.addAll(page.getContent()) ;
+		}
 		return result;
 
 	}

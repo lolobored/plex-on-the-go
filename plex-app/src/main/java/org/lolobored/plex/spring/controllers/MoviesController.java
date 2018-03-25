@@ -19,7 +19,7 @@ public class MoviesController {
     MovieService movieService;
 
     @PostMapping
-    public List<Media> getMovies(String user)  {
+    public List<Media> getMovies(@RequestBody String user)  {
         return movieService.getMovies(user);
     }
 

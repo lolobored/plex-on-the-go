@@ -11,5 +11,7 @@ public interface MediaRepository extends ElasticsearchRepository<Media, String> 
 
 	Media findByUserAndPlexId(String user, String plexId);
 
+	Page<Media> findByUser(String user, Pageable pageable);
+
 	Page<Media> findByUserAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(String user, List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
 }
