@@ -28,6 +28,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Media> getMovies(String user) {
+
         return elasticSearch.getAllMovies(user);
     }
 

@@ -32,7 +32,8 @@ public class UserServiceImpl implements UserService {
 			// authentication failed
 		}
 		user.setPlexToken(plexToken);
-		return repository.save(user);
+		User newUser= repository.save(user);
+		return newUser;
 	}
 
 	@Override
@@ -50,6 +51,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUser(Integer id) {
 		Optional<User> user = repository.findById(id);
+		return user.get();
+	}
+
+	@Override
+	public User getUser(String username) {
+		Optional<User> user = repository.findByUserName(username);
+		if (!user.isPresent()){
+			User newuser = new User();
+			newuser.setUserName(username);
+			repository.save(newuser);
+			user = repository.findByUserName(username);
+		}
 		return user.get();
 	}
 

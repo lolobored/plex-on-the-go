@@ -13,9 +13,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "plexuser")
 public class User {
-    public static String ADMIN_ROLE="Admin";
-    public static String USER_ROLE="User";
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +20,7 @@ public class User {
     @Column
     private String userName;
     @Column
-    private String password;
-    private String role;
-    @Column
     private String plexLogin;
-    @Column
     private String plexPassword;
     @Column
     private String plexToken;

@@ -20,6 +20,7 @@ public class MoviesController {
 
     @PostMapping
     public List<Media> getMovies(@RequestBody String user)  {
+
         return movieService.getMovies(user);
     }
 
