@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/users"})
+@RequestMapping({"/plex-backend/users"})
 public class UsersController {
 
     @Autowired

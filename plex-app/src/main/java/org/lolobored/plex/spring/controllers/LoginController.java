@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    @PostMapping(path = "/login", consumes = "application/json")
+    @PostMapping(path = "/plex-backend/login", consumes = "application/json")
     public String getLogin(@RequestBody User user){
 
         return "success";
