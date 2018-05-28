@@ -31,9 +31,6 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
 	private static Logger logger = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
 
-	private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule())
-		.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
 
 	/**
 	 * Insert any Media object into Elastic Search

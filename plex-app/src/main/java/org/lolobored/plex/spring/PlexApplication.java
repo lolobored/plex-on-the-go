@@ -33,6 +33,6 @@ public class PlexApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(PlexApplication.class,  "--debug");
+        SpringApplication.run(PlexApplication.class);
     }
 }

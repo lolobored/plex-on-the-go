@@ -1,0 +1,10 @@
+{
+  "realm": "plex",
+  "auth-server-url": "http://localhost:4664/auth",
+  "ssl-required": "external",
+  "resource": "plex-backend",
+  "credentials": {
+    "secret": "5f4520d7-8b70-4364-acb0-dd70833ffacd"
+  },
+  "use-resource-role-mappings": true
+}

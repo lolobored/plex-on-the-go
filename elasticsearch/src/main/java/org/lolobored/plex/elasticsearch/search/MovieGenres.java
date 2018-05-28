@@ -34,8 +34,10 @@ public class MovieGenres {
 	public void addGenres(List<String> addedGenres) {
 		l.lock();
 		try {
-			for (String genre: addedGenres){
-				addGenre(genre);
+			if (addedGenres != null) {
+				for (String genre : addedGenres) {
+					addGenre(genre);
+				}
 			}
 		} finally {
 			l.unlock();

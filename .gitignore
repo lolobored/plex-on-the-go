@@ -20,3 +20,6 @@ elasticsearch/out
 plex-app/out
 plex/out
 derby.log
+elasticsearch/build
+plex-app/build
+testing/build
