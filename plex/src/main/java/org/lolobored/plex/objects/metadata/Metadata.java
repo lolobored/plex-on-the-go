@@ -19,6 +19,7 @@ public class Metadata {
 	private String grandparentRatingKey;
 	private String type;
 	private String title;
+	private Integer viewCount;
 	private String grandparentKey;
 	private String parentKey;
 	private String grandparentTitle;
@@ -30,7 +31,6 @@ public class Metadata {
 	private Integer index;
 	private Integer parentIndex;
 	private BigDecimal rating;
-	private BigInteger viewCount;
 	private String thumb;
 	private String art;
 	private String parentThumb;

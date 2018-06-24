@@ -44,6 +44,7 @@ public class Media{
 	private String fileLocation;
 	private Integer year;
 	private BigDecimal rating;
+	private Boolean watched;
 	private String summary;
 	private List<String> genres;
 	@JsonDeserialize(using = LocalDateDeserializer.class)

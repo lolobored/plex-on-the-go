@@ -195,6 +195,7 @@ public class PlexServiceImpl implements PlexService{
         media.setRating(metadata.getRating());
         media.setSummary(metadata.getSummary());
         media.setTitle(metadata.getTitle());
+        media.setWatched(metadata.getViewCount() > 0);
         media.setYear(metadata.getYear());
         media.setUser(user);
         media.setLibrary(library);
