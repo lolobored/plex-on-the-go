@@ -61,7 +61,9 @@ public class ConverterTask {
 			ffmpegBuilder.addExtraArgs("copy");
 
 			for (Map.Entry<String, String> tag : in.getFormat().tags.entrySet()) {
-				ffmpegBuilder.addMetaTag(tag.getKey(), tag.getValue());
+				if (!"".equals(tag.getValue())) {
+					ffmpegBuilder.addMetaTag(tag.getKey(), tag.getValue());
+				}
 			}
 			ConverterProgressListener converterProgressListener = new ConverterProgressListener(conversionProgress, (long) in.getFormat().duration);
 
