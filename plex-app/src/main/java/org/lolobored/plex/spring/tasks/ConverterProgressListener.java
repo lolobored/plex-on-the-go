@@ -20,7 +20,7 @@ public class ConverterProgressListener implements ProgressListener {
 		long currentTime = System.currentTimeMillis();
 		long elapsedTime= currentTime-startTime;
 		long current_ms = progress.out_time_ms/1000;
-		double percentage = (double)current_ms / totalDurationMs * 100;
+		double percentage = (double)current_ms / totalDurationMs;
 		long remaining_ms = (long)(elapsedTime/percentage) - elapsedTime;
 		if (remaining_ms<0){
 			remaining_ms=0;
