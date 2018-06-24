@@ -1,5 +1,6 @@
 dependencies {
     compile project(':plex')
+    compile project(':converter')
     // https://mvnrepository.com/artifact/com.github.vanroy/spring-data-jest
     compile group: 'com.github.vanroy', name: 'spring-boot-starter-data-jest', version: '3.1.1.RELEASE'
 

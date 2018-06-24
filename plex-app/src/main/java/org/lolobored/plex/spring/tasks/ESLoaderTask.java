@@ -1,7 +1,9 @@
-package org.lolobored.plex.spring.batch;
+package org.lolobored.plex.spring.tasks;
 
 import org.lolobored.http.HttpException;
 import org.lolobored.plex.PlexService;
+import org.lolobored.plex.spring.models.Conversion;
+import org.lolobored.plex.spring.repository.ConversionRepository;
 import org.lolobored.plex.elasticsearch.ElasticSearchService;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.config.PlexConfig;
@@ -14,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -34,6 +37,9 @@ public class ESLoaderTask {
 	@Autowired
 	PlexConfig plexConfig;
 
+	@Autowired
+	ConversionRepository conversionRepository;
+
 	@Scheduled(fixedRate = 1800000)
 	public void loadElasticSearch() {
 
@@ -48,7 +54,6 @@ public class ESLoaderTask {
 						user.getPlexLogin(),
 						true);
 					log.debug(String.format("User [%s] has a list of [%d] movies", user.getUserName(), movies.size()));
-
 					for (Media movie : movies) {
 						elasticSearchService.insertMedia(movie);
 						log.debug(String.format("Movie [%s][%s] was added", movie.getTitle(), movie.getFileLocation()));

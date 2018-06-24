@@ -2,7 +2,7 @@ package org.lolobored.plex.spring.services.impl;
 
 import org.lolobored.http.HttpException;
 import org.lolobored.plex.PlexService;
-import org.lolobored.plex.spring.batch.ESLoaderTask;
+import org.lolobored.plex.spring.tasks.ESLoaderTask;
 import org.lolobored.plex.spring.models.User;
 import org.lolobored.plex.spring.repository.UserRepository;
 import org.lolobored.plex.spring.services.UserService;
