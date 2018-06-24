@@ -95,6 +95,7 @@ public class ConverterTask {
 					Media media= conversionJob.getConversion().getMediaAsObject();
 					File sourceFile= new File(converterConfig.getTempDirectory() + "/converting.m4v");
 					String path= converterConfig.getOutputDirectory();
+					path+="/"+media.getUser().toLowerCase();
 					path+="/movies";
 					if (media.getGenres().isEmpty()){
 						path+="/unknown";
