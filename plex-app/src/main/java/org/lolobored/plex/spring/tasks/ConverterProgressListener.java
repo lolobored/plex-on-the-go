@@ -2,7 +2,6 @@ package org.lolobored.plex.spring.tasks;
 
 import net.bramp.ffmpeg.progress.Progress;
 import net.bramp.ffmpeg.progress.ProgressListener;
-import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionProgress;
 
 public class ConverterProgressListener implements ProgressListener {
@@ -20,8 +19,8 @@ public class ConverterProgressListener implements ProgressListener {
 	public void progress(Progress progress) {
 		long currentTime = System.currentTimeMillis();
 		long elapsedTime= currentTime-startTime;
-		long current_ms = progress.out_time_ns/1000;
-		double percentage = (double)current_ms / totalDurationMs;
+		long current_ms = progress.out_time_ms/1000;
+		double percentage = (double)current_ms / totalDurationMs * 100;
 		long remaining_ms = (long)(elapsedTime/percentage) - elapsedTime;
 		if (remaining_ms<0){
 			remaining_ms=0;

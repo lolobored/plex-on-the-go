@@ -2,7 +2,6 @@ package org.lolobored.plex.spring.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.bramp.ffmpeg.FFmpegUtils;
-import org.apache.tomcat.jni.Local;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.converter.ConverterQueue;
