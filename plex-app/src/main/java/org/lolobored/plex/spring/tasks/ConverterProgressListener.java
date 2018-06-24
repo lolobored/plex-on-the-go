@@ -27,7 +27,7 @@ public class ConverterProgressListener implements ProgressListener {
 		}
 
 		conversionProgress.setElapsedTime(elapsedTime);
-		conversionProgress.setPercentage(percentage);
+		conversionProgress.setPercentage(percentage*100);
 		conversionProgress.setRemainingTime(remaining_ms);
 		conversionProgress.setSpeed(progress.fps.floatValue());
 	}
