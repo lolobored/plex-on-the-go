@@ -14,4 +14,5 @@ public class ConverterConfig {
 	private String ffmpeg;
 	private String ffprobe;
 	private String tempDirectory;
+	private String outputDirectory;
 }

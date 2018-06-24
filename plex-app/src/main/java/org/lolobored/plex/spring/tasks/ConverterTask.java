@@ -7,6 +7,7 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.builder.FFmpegOutputBuilder;
 import net.bramp.ffmpeg.job.FFmpegJob;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
+import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.config.ConverterConfig;
 import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.converter.ConverterQueue;
@@ -20,9 +21,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ConverterTask {
@@ -81,7 +84,7 @@ public class ConverterTask {
 					ffmpegBuilder.addMetaTag(tag.getKey(), tag.getValue());
 				}
 			}
-			ConverterProgressListener converterProgressListener = new ConverterProgressListener(conversionProgress, (long) in.getFormat().duration);
+			ConverterProgressListener converterProgressListener = new ConverterProgressListener(conversionProgress, (long)  in.getFormat().duration * TimeUnit.SECONDS.toMillis(1));
 
 			FFmpegJob job = executor.createJob(ffmpegBuilder.done(), converterProgressListener);
 			job.run();
@@ -89,6 +92,23 @@ public class ConverterTask {
 			while (true) {
 				Thread.sleep(10000);
 				if (job.getState() != FFmpegJob.State.RUNNING) {
+					Media media= conversionJob.getConversion().getMediaAsObject();
+					File sourceFile= new File(converterConfig.getTempDirectory() + "/converting.m4v");
+					String path= converterConfig.getOutputDirectory();
+					path+="/movies";
+					if (media.getGenres().isEmpty()){
+						path+="/unknown";
+					}
+					else{
+						path+=media.getGenres().get(0).toLowerCase();
+					}
+					path+="/";
+					path+=media.getTitle().toLowerCase()+" ["+media.getYear()+"]";
+					File directory= new File(path);
+					directory.mkdirs();
+					path+=media.getTitle().toLowerCase()+" ["+media.getYear()+"]-720p.m4v";
+					File targetFile=new File(path);
+					sourceFile.renameTo(targetFile);
 					conversion.setDone(true);
 					conversionRepository.save(conversion);
 				}

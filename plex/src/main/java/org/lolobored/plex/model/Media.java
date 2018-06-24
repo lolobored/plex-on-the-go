@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.GeneratedValue;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class Media{
 	private BigDecimal rating;
 	private Boolean watched;
 	private String summary;
-	private List<String> genres;
+	private List<String> genres= new ArrayList<>();
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate releaseDate;
