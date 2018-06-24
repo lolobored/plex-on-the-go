@@ -25,7 +25,7 @@ public class ConversionController {
 
 	@PostMapping(path = "/plex-backend/conversions", consumes = "application/json")
 	@PreAuthorize("isAuthenticated()")
-	public List<RunningConversion> getPendingConversions(@RequestBody User user) throws IOException {
+	public List<RunningConversion> getPendingConversions() throws IOException {
 
 		return conversionService.getPendingConversions();
 	}
