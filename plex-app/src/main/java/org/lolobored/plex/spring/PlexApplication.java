@@ -2,6 +2,7 @@ package org.lolobored.plex.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.lolobored.plex.spring.converter.ConverterQueue;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,6 +32,11 @@ public class PlexApplication {
         objectMapper.registerModule(javaTimeModule);
         return objectMapper;
     }
+
+		@Bean(name = "conversionQueue")
+    public ConverterQueue getConversionQueue(){
+    	return new ConverterQueue();
+		}
 
     public static void main(String[] args) {
         SpringApplication.run(PlexApplication.class, args);

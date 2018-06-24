@@ -8,6 +8,8 @@ import net.bramp.ffmpeg.builder.FFmpegOutputBuilder;
 import net.bramp.ffmpeg.job.FFmpegJob;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 import org.lolobored.plex.spring.config.ConverterConfig;
+import org.lolobored.plex.spring.converter.ConversionJob;
+import org.lolobored.plex.spring.converter.ConverterQueue;
 import org.lolobored.plex.spring.models.Conversion;
 import org.lolobored.plex.spring.converter.ConversionProgress;
 import org.lolobored.plex.spring.repository.ConversionRepository;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +35,26 @@ public class ConverterTask {
 	@Autowired
 	ConverterConfig converterConfig;
 
+	@Resource(name = "conversionQueue")
+	ConverterQueue converterQueue;
+
 	@Scheduled(fixedRate = 10000)
 	public void convertMedia() throws IOException, InterruptedException {
 		List<Conversion> listOfMedia = conversionRepository.findAllByDoneFalseOrderByCreationDate();
 
-		if (!listOfMedia.isEmpty()) {
-			Conversion conversion = listOfMedia.get(0);
-			ConversionProgress conversionProgress = new ConversionProgress();
+		converterQueue.removeAllJobs();
+		// load the conversion queue
+		for (Conversion conversion: listOfMedia){
+			ConversionJob conversionJob= new ConversionJob();
+			conversionJob.setConversion(conversion);
+			conversionJob.setConversionProgress(new ConversionProgress());
+			converterQueue.addJob(conversionJob);
+		}
+
+		if (!converterQueue.isEmpty()) {
+			ConversionJob conversionJob= converterQueue.getNextJob();
+			Conversion conversion = conversionJob.getConversion();
+			ConversionProgress conversionProgress = conversionJob.getConversionProgress();
 
 			FFmpeg ffmpeg = new FFmpeg(converterConfig.getFfmpeg());
 			FFprobe ffprobe = new FFprobe(converterConfig.getFfprobe());
@@ -68,7 +84,6 @@ public class ConverterTask {
 			ConverterProgressListener converterProgressListener = new ConverterProgressListener(conversionProgress, (long) in.getFormat().duration);
 
 			FFmpegJob job = executor.createJob(ffmpegBuilder.done(), converterProgressListener);
-
 			job.run();
 
 			while (true) {

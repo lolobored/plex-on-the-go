@@ -2,6 +2,7 @@ package org.lolobored.plex.spring.tasks;
 
 import net.bramp.ffmpeg.progress.Progress;
 import net.bramp.ffmpeg.progress.ProgressListener;
+import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionProgress;
 
 public class ConverterProgressListener implements ProgressListener {
