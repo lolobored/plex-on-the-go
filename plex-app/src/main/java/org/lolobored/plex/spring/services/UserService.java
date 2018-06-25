@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface UserService {
 
-    User addUser(User user);
+    User addUser(String authToken, User user);
 
-    User deleteUser(Integer id);
+    User deleteUser(String authToken, String id);
 
     List<User> getUsers();
 
-    User getUser(Integer id);
+    User getUserById(String id);
 
     User getUser(String username);
 
-    User updateUser(Integer id, User user);
+    User updateUser(String authToken, User user);
 }

@@ -24,8 +24,8 @@ public class UsersController {
 
     @GetMapping(path ={"/{id}"})
     @PreAuthorize("isAuthenticated()")
-    public User getUser(@PathVariable("id") int id)  {
-        return userService.getUser(id);
+    public User getUser(@PathVariable("id") String id)  {
+        return userService.getUserById(id);
     }
 
     @GetMapping(path ={"/byname/{username}"})
@@ -36,19 +36,21 @@ public class UsersController {
 
     @DeleteMapping(path ={"/{id}"})
     @PreAuthorize("isAuthenticated()")
-    public User delete(@PathVariable("id") int id) {
-        return userService.deleteUser(id);
+    public User delete(@PathVariable("id") String id, @RequestHeader(value="Authorization") String bearerToken) {
+
+        return userService.deleteUser(bearerToken, id);
     }
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public User addUser(@RequestBody User user){
-        return userService.addUser(user);
+    public User addUser(@RequestBody User user, @RequestHeader(value="Authorization") String bearerToken){
+
+        return userService.addUser(bearerToken, user);
     }
 
     @PutMapping(path ={"/{id}"})
     @PreAuthorize("isAuthenticated()")
-    public User updateUser(@PathVariable("id") int id, @RequestBody User user){
-        return userService.updateUser(id, user);
+    public User updateUser(@PathVariable("id") int id, @RequestBody User user, @RequestHeader(value="Authorization") String bearerToken){
+        return userService.updateUser(bearerToken, user);
     }
 }

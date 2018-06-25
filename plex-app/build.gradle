@@ -15,7 +15,11 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
     compile project(':elasticsearch')
-    compile group: 'org.keycloak', name: 'keycloak-spring-security-adapter', version: '3.4.3.Final'
+    compile group: 'org.keycloak', name: 'keycloak-spring-security-adapter', version: '4.0.0.Final'
+    compile group: 'org.keycloak', name: 'keycloak-admin-client', version: '4.0.0.Final'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '3.5.1.Final'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jackson2-provider', version: '3.5.1.Final'
+
     compile group: 'org.apache.derby', name: 'derby', version: '10.14.1.0'
     compile group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.6.1'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.RELEASE'

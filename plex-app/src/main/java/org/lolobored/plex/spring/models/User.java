@@ -13,22 +13,39 @@ import javax.persistence.*;
 @Entity
 @Table(name = "plexuser")
 public class User {
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column
-    private String userName;
-    @Column
-    private String plexLogin;
-    private String plexPassword;
-    @Column
-    private String plexToken;
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private boolean plexTokenValidated;
+	@Id
+	@Column(unique = true)
+	private String id;
+	@Column(unique = true)
+	private String userName;
+	@Column
+	@Basic(optional=true)
+	private String plexLogin;
+	@Column
+	@Basic(optional=true)
+	private String plexPassword;
+	@Column
+	@Basic(optional=true)
+	private String plexToken;
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
+	@Column
+	private boolean plexTokenValidated;
+	@Column
+	@Basic(optional=true)
+	private String homeDirectory;
+	@Column
+	@Basic
+	private boolean admin;
 
-    public boolean isPlexTokenValidated() {
-        return plexToken!=null;
-    }
+	@Transient // --> never store the password... leave that complexity to keycloak
+	private String password;
+	@Transient // --> do not store user information... leave that complexity to keycloak
+	private String firstName;
+	@Transient // --> do not store user information... leave that complexity to keycloak
+	private String lastName;
+
+	public boolean isPlexTokenValidated() {
+		return plexToken != null;
+	}
 }
