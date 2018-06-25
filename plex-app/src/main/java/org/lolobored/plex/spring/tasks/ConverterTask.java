@@ -54,7 +54,7 @@ public class ConverterTask {
 			converterQueue.addJob(conversionJob);
 		}
 
-		if (!converterQueue.isEmpty()) {
+		while (!converterQueue.isEmpty()) {
 			ConversionJob conversionJob= converterQueue.getNextJob();
 			Conversion conversion = conversionJob.getConversion();
 			ConversionProgress conversionProgress = conversionJob.getConversionProgress();
@@ -107,11 +107,13 @@ public class ConverterTask {
 					path+=media.getTitle().toLowerCase()+" ["+media.getYear()+"]";
 					File directory= new File(path);
 					directory.mkdirs();
-					path+=media.getTitle().toLowerCase()+" ["+media.getYear()+"]-720p.m4v";
+					path+="/"+media.getTitle().toLowerCase()+" ["+media.getYear()+"]-720p.m4v";
 					File targetFile=new File(path);
 					sourceFile.renameTo(targetFile);
 					conversion.setDone(true);
 					conversionRepository.save(conversion);
+					converterQueue.removeJob();
+					break;
 				}
 			}
 		}
