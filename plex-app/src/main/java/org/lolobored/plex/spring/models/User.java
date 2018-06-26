@@ -11,39 +11,39 @@ import javax.persistence.*;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "plexuser")
+@Table(name = "users")
 public class User {
 	@Id
 	@Column(unique = true)
 	private String id;
-	@Column(unique = true)
+	@Column(unique = true, name="username")
 	private String userName;
-	@Column
+	@Column(name="first_name")
+	private String firstName;
+	@Column(name="last_name")
+	private String lastName;
+	@Column(name="plex_login")
 	@Basic(optional=true)
 	private String plexLogin;
-	@Column
+	@Column(name="plex_password")
 	@Basic(optional=true)
 	private String plexPassword;
-	@Column
+	@Column(name="plex_token")
 	@Basic(optional=true)
 	private String plexToken;
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
-	@Column
-	private boolean plexTokenValidated;
-	@Column
+	@Column(name="token_validated")
+	private boolean tokenValidated;
+	@Column(name="home_directory")
 	@Basic(optional=true)
 	private String homeDirectory;
-	@Column
+	@Column(name="admin")
 	@Basic
 	private boolean admin;
 
 	@Transient // --> never store the password... leave that complexity to keycloak
 	private String password;
-	@Transient // --> do not store user information... leave that complexity to keycloak
-	private String firstName;
-	@Transient // --> do not store user information... leave that complexity to keycloak
-	private String lastName;
 
 	public boolean isPlexTokenValidated() {
 		return plexToken != null;

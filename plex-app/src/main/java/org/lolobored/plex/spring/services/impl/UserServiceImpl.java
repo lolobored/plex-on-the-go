@@ -56,17 +56,12 @@ public class UserServiceImpl implements UserService {
 		// update user in keycloak
 		updateUserInKeycloak(authToken, user);
 		User newUser= repository.save(user);
-		// ensure we do not send back the passwords
-		newUser.setPassword("dummy");
-		newUser.setPlexPassword("dummy");
 		return newUser;
 	}
 
 	@Override
-	public User deleteUser(String authToken, String id) {
-		Optional<User> user = repository.findById(id);
+	public void deleteUser(String authToken, String id) {
 		repository.deleteById(id);
-		return user.get();
 	}
 
 	@Override
@@ -108,9 +103,6 @@ public class UserServiceImpl implements UserService {
 		// update user in keycloak
 		updateUserInKeycloak(authToken, user);
 		User newUser= repository.save(user);
-		// ensure we do not send back the passwords
-		newUser.setPassword("dummy");
-		newUser.setPlexPassword("dummy");
 		return newUser;
 	}
 
@@ -147,6 +139,7 @@ public class UserServiceImpl implements UserService {
 		CredentialRepresentation credential = new CredentialRepresentation();
 		credential.setType(CredentialRepresentation.PASSWORD);
 		credential.setValue(user.getPassword());
+		credential.setTemporary(false);
 
 		// retrieve user in keycloak
 		UserRepresentation userRepresentation= usersResource.get(user.getId()).toRepresentation();
@@ -157,6 +150,7 @@ public class UserServiceImpl implements UserService {
 		// get the user resource
 		UserResource userResource= usersResource.get(user.getId());
 		userResource.update(userRepresentation);
+		userResource.resetPassword(credential);
 
 		// Get realm role "tester" (requires view-realm role)
 		RoleRepresentation adminRole = kc.realm("plex").roles()

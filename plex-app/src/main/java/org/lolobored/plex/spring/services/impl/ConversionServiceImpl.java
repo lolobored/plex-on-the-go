@@ -7,8 +7,10 @@ import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.converter.ConverterQueue;
 import org.lolobored.plex.spring.models.Conversion;
 import org.lolobored.plex.spring.models.RunningConversion;
+import org.lolobored.plex.spring.models.User;
 import org.lolobored.plex.spring.repository.ConversionRepository;
 import org.lolobored.plex.spring.services.ConversionService;
+import org.lolobored.plex.spring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ public class ConversionServiceImpl implements ConversionService {
 
 	@Autowired
 	ConversionRepository conversionRepository;
+
+	@Autowired
+	UserService userService;
 
 	@Resource(name = "conversionQueue")
 	ConverterQueue converterQueue;
@@ -51,14 +56,15 @@ public class ConversionServiceImpl implements ConversionService {
 	}
 
 	@Override
-	public void addConversion(Media media) throws JsonProcessingException {
+	public void addConversion(Media media, String userid) throws JsonProcessingException {
 
 		Optional<Conversion> conversionOpt = conversionRepository.findById(media.getId());
 		if (!conversionOpt.isPresent()) {
 			Conversion conversion = new Conversion();
 			conversion.setId(media.getId());
-			conversion.setCreationDate(LocalDateTime.now());
-			conversion.setUserName(media.getUser());
+			conversion.setCreationDateTime(LocalDateTime.now());
+			User user= userService.getUserById(userid);
+			conversion.setUser(user);
 			conversion.setDone(false);
 			conversion.setMedia(media);
 			conversionRepository.save(conversion);

@@ -8,7 +8,7 @@ public interface UserService {
 
     User addUser(String authToken, User user);
 
-    User deleteUser(String authToken, String id);
+    void deleteUser(String authToken, String id);
 
     List<User> getUsers();
 

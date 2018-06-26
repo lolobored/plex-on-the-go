@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ConversionRepository extends JpaRepository<Conversion, String> {
 
-	List<Conversion> findAllByDoneFalseOrderByCreationDate();
+	List<Conversion> findAllByDoneFalseOrderByCreationDateTime();
 
 }

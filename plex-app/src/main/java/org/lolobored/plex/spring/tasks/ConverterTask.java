@@ -43,7 +43,7 @@ public class ConverterTask {
 
 	@Scheduled(fixedRate = 10000)
 	public void convertMedia() throws IOException, InterruptedException {
-		List<Conversion> listOfMedia = conversionRepository.findAllByDoneFalseOrderByCreationDate();
+		List<Conversion> listOfMedia = conversionRepository.findAllByDoneFalseOrderByCreationDateTime();
 
 		converterQueue.removeAllJobs();
 		// load the conversion queue

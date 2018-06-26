@@ -6,51 +6,77 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController
 @RequestMapping({"/plex-backend/users"})
 public class UsersController {
 
-    @Autowired
-    UserService userService;
+	private static String DUMMY_PASSWORD = "dummy";
 
-    @GetMapping
-    @PreAuthorize("isAuthenticated()")
-    public List<User> getUsers()  {
-        return userService.getUsers();
-    }
+	@Autowired
+	UserService userService;
 
-    @GetMapping(path ={"/{id}"})
-    @PreAuthorize("isAuthenticated()")
-    public User getUser(@PathVariable("id") String id)  {
-        return userService.getUserById(id);
-    }
+	@GetMapping
+	@PreAuthorize("isAuthenticated()")
+	public List<User> getUsers() {
+		List<User> users = userService.getUsers();
+		for (User user : users) {
+			// ensure we do not send back the passwords
+			user.setPassword(DUMMY_PASSWORD);
+			user.setPlexPassword(DUMMY_PASSWORD);
+		}
+		return users;
+	}
 
-    @GetMapping(path ={"/byname/{username}"})
-    @PreAuthorize("isAuthenticated()")
-    public User getUserByName(@PathVariable("username") String user){
-        return userService.getUser(user);
-    }
+	@GetMapping(path = {"/{id}"})
+	@PreAuthorize("isAuthenticated()")
+	public User getUser(@PathVariable("id") String id) {
+		User user = userService.getUserById(id);
+		// ensure we do not send back the passwords
+		user.setPassword(DUMMY_PASSWORD);
+		user.setPlexPassword(DUMMY_PASSWORD);
+		return user;
+	}
 
-    @DeleteMapping(path ={"/{id}"})
-    @PreAuthorize("isAuthenticated()")
-    public User delete(@PathVariable("id") String id, @RequestHeader(value="Authorization") String bearerToken) {
+	@GetMapping(path = {"/byname/{username}"})
+	@PreAuthorize("isAuthenticated()")
+	public User getUserByName(@PathVariable("username") String username) {
 
-        return userService.deleteUser(bearerToken, id);
-    }
+		User user = userService.getUser(username);
+		// ensure we do not send back the passwords
+		user.setPassword(DUMMY_PASSWORD);
+		user.setPlexPassword(DUMMY_PASSWORD);
+		return user;
 
-    @PostMapping
-    @PreAuthorize("isAuthenticated()")
-    public User addUser(@RequestBody User user, @RequestHeader(value="Authorization") String bearerToken){
+	}
 
-        return userService.addUser(bearerToken, user);
-    }
+	@DeleteMapping(path = {"/{id}"})
+	@PreAuthorize("isAuthenticated()")
+	public void delete(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String bearerToken) {
 
-    @PutMapping(path ={"/{id}"})
-    @PreAuthorize("isAuthenticated()")
-    public User updateUser(@PathVariable("id") int id, @RequestBody User user, @RequestHeader(value="Authorization") String bearerToken){
-        return userService.updateUser(bearerToken, user);
-    }
+		userService.deleteUser(bearerToken, id);
+	}
+
+	@PostMapping
+	@PreAuthorize("isAuthenticated()")
+	public User addUser(@RequestBody User user, @RequestHeader(value = "Authorization") String bearerToken) {
+		bearerToken = bearerToken.substring(bearerToken.indexOf(" ")).trim();
+		user = userService.addUser(bearerToken, user);
+		// ensure we do not send back the passwords
+		user.setPassword(DUMMY_PASSWORD);
+		user.setPlexPassword(DUMMY_PASSWORD);
+		return user;
+	}
+
+	@PutMapping(path = {"/{id}"})
+	@PreAuthorize("isAuthenticated()")
+	public User updateUser(@PathVariable("id") int id, @RequestBody User user, @RequestHeader(value = "Authorization") String bearerToken) {
+		bearerToken = bearerToken.substring(bearerToken.indexOf(" ")).trim();
+		user = userService.updateUser(bearerToken, user);
+		// ensure we do not send back the passwords
+		user.setPassword(DUMMY_PASSWORD);
+		user.setPlexPassword(DUMMY_PASSWORD);
+		return user;
+	}
 }

@@ -23,10 +23,11 @@ public class Conversion {
 	private String media;
 	@Column
 	private boolean done= false;
-	@Column
-	private LocalDateTime creationDate;
-	@Column
-	private String userName;
+	@Column(name = "creation_datetime")
+	private LocalDateTime creationDateTime;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	public void setMedia(Media mediaObj) throws JsonProcessingException {
 		ObjectMapper mapper= new ObjectMapper();

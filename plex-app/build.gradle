@@ -19,7 +19,9 @@ dependencies {
     compile group: 'org.keycloak', name: 'keycloak-admin-client', version: '4.0.0.Final'
     compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '3.5.1.Final'
     compile group: 'org.jboss.resteasy', name: 'resteasy-jackson2-provider', version: '3.5.1.Final'
-
+    compile group: 'org.eclipse', name: 'yasson', version: '1.0.1'
+    compile group: 'org.glassfish', name: 'javax.json', version: '1.1.2'
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.1'
     compile group: 'org.apache.derby', name: 'derby', version: '10.14.1.0'
     compile group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.6.1'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.RELEASE'

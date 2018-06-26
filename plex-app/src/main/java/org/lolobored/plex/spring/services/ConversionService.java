@@ -12,5 +12,5 @@ import java.util.List;
 public interface ConversionService {
 
     List<RunningConversion> getPendingConversions() throws IOException;
-    void addConversion(Media media) throws JsonProcessingException;
+    void addConversion(Media media, String userid) throws JsonProcessingException;
 }
