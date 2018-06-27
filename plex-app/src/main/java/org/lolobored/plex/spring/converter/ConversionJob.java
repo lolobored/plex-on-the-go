@@ -1,11 +1,11 @@
 package org.lolobored.plex.spring.converter;
 
 import lombok.Data;
-import org.lolobored.plex.spring.models.Conversion;
+import org.lolobored.plex.spring.models.PendingConversion;
 
 @Data
 public class ConversionJob {
 
-	private Conversion conversion;
+	private PendingConversion pendingConversion;
 	private ConversionProgress conversionProgress;
 }

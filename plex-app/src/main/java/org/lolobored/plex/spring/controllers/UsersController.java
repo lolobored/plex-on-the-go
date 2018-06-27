@@ -54,7 +54,7 @@ public class UsersController {
 	@DeleteMapping(path = {"/{id}"})
 	@PreAuthorize("isAuthenticated()")
 	public void delete(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String bearerToken) {
-
+		bearerToken = bearerToken.substring(bearerToken.indexOf(" ")).trim();
 		userService.deleteUser(bearerToken, id);
 	}
 

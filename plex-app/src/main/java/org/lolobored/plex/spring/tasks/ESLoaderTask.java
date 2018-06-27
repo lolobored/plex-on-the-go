@@ -2,7 +2,6 @@ package org.lolobored.plex.spring.tasks;
 
 import org.lolobored.http.HttpException;
 import org.lolobored.plex.PlexService;
-import org.lolobored.plex.spring.models.Conversion;
 import org.lolobored.plex.spring.repository.ConversionRepository;
 import org.lolobored.plex.elasticsearch.ElasticSearchService;
 import org.lolobored.plex.model.Media;
@@ -16,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component

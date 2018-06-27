@@ -5,7 +5,7 @@ import net.bramp.ffmpeg.FFmpegUtils;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.converter.ConverterQueue;
-import org.lolobored.plex.spring.models.Conversion;
+import org.lolobored.plex.spring.models.PendingConversion;
 import org.lolobored.plex.spring.models.RunningConversion;
 import org.lolobored.plex.spring.models.User;
 import org.lolobored.plex.spring.repository.ConversionRepository;
@@ -49,7 +49,7 @@ public class ConversionServiceImpl implements ConversionService {
 				runningConversion.setEstimatedRemaining("Undefined");
 			}
 			runningConversion.setPercentage(converterJob.getConversionProgress().getPercentage());
-			runningConversion.setTitle(converterJob.getConversion().getMediaAsObject().getTitle());
+			runningConversion.setTitle(converterJob.getPendingConversion().getMediaAsObject().getTitle());
 			result.add(runningConversion);
 		}
 		return result;
@@ -58,16 +58,16 @@ public class ConversionServiceImpl implements ConversionService {
 	@Override
 	public void addConversion(Media media, String userid) throws JsonProcessingException {
 
-		Optional<Conversion> conversionOpt = conversionRepository.findById(media.getId());
+		Optional<PendingConversion> conversionOpt = conversionRepository.findById(media.getId());
 		if (!conversionOpt.isPresent()) {
-			Conversion conversion = new Conversion();
-			conversion.setId(media.getId());
-			conversion.setCreationDateTime(LocalDateTime.now());
+			PendingConversion pendingConversion = new PendingConversion();
+			pendingConversion.setId(media.getId());
+			pendingConversion.setCreationDateTime(LocalDateTime.now());
 			User user= userService.getUserById(userid);
-			conversion.setUser(user);
-			conversion.setDone(false);
-			conversion.setMedia(media);
-			conversionRepository.save(conversion);
+			pendingConversion.setUser(user);
+			pendingConversion.setDone(false);
+			pendingConversion.setMedia(media);
+			conversionRepository.save(pendingConversion);
 		}
 	}
 }

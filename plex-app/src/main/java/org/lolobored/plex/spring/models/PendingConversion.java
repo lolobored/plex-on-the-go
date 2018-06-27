@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "conversion")
-public class Conversion {
+@Table(name = "pending_conversion")
+public class PendingConversion {
 
 	@Id
 	@Column

@@ -30,6 +30,9 @@ public class User {
 	@Column(name="home_directory")
 	@Basic(optional=true)
 	private String homeDirectory;
+	@Column(name="ownership")
+	@Basic(optional=true)
+	private String ownership;
 	@Column(name="admin")
 	@Basic
 	private boolean admin;

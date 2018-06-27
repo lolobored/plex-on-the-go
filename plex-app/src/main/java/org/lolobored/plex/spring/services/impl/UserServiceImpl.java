@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
 		// try to authenticate to Plex
 		try {
 			plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
-			loaderTask.loadElasticSearch();
 
 		} catch (HttpException | IOException e) {
 			// authentication failed
@@ -56,6 +55,9 @@ public class UserServiceImpl implements UserService {
 		// update user in keycloak
 		updateUserInKeycloak(authToken, user);
 		User newUser = repository.save(user);
+		if (plexToken!=null){
+			loaderTask.loadElasticSearch();
+		}
 		return newUser;
 	}
 
@@ -95,7 +97,6 @@ public class UserServiceImpl implements UserService {
 		// try to authenticate to Plex
 		try {
 			plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
-			loaderTask.loadElasticSearch();
 
 		} catch (HttpException | IOException e) {
 			// authentication failed
@@ -105,6 +106,9 @@ public class UserServiceImpl implements UserService {
 		// update user in keycloak
 		updateUserInKeycloak(authToken, user);
 		User newUser = repository.save(user);
+		if (plexToken!=null){
+			loaderTask.loadElasticSearch();
+		}
 		return newUser;
 	}
 
@@ -178,7 +182,6 @@ public class UserServiceImpl implements UserService {
 		UsersResource usersResource = realmResource.users();
 
 		// get the user resource
-		UserResource userResource = usersResource.get(id);
-		userResource.remove();
+		usersResource.delete(id);
 	}
 }

@@ -43,12 +43,17 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
+                  name: ownership
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
                   name: admin
                   type: boolean
                   constraints:
                     nullable: false
         - createTable:
-            tableName: conversion
+            tableName: pending_conversion
             columns:
               - column:
                   name: id
@@ -76,13 +81,39 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_conversion_user
+                    foreignKeyName: fk_pending_conversion_user
                     references: users(id)
-
-  - changeSet:
-      id: 2
-      author: lolobored
-      changes:
+        - createTable:
+            tableName: converted
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: media
+                  type: clob
+                  constraints:
+                    nullable: false
+              - column:
+                  name: converted_datetime
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_converted_user
+                    references: users(id)
+              - column:
+                  name: final_path
+                  type: longvarchar(10000)
+                  constraints:
+                    nullable: false
         - insert:
             tableName: users
             columns:
@@ -101,6 +132,3 @@ databaseChangeLog:
               - column:
                   name: admin
                   value: true
-              - column:
-                  name: token_validated
-                  value: false

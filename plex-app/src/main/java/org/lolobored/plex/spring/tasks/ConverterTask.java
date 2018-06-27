@@ -11,7 +11,7 @@ import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.config.ConverterConfig;
 import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.converter.ConverterQueue;
-import org.lolobored.plex.spring.models.Conversion;
+import org.lolobored.plex.spring.models.PendingConversion;
 import org.lolobored.plex.spring.converter.ConversionProgress;
 import org.lolobored.plex.spring.repository.ConversionRepository;
 import org.slf4j.Logger;
@@ -43,20 +43,20 @@ public class ConverterTask {
 
 	@Scheduled(fixedRate = 10000)
 	public void convertMedia() throws IOException, InterruptedException {
-		List<Conversion> listOfMedia = conversionRepository.findAllByDoneFalseOrderByCreationDateTime();
+		List<PendingConversion> listOfMedia = conversionRepository.findAllByDoneFalseOrderByCreationDateTime();
 
 		converterQueue.removeAllJobs();
-		// load the conversion queue
-		for (Conversion conversion: listOfMedia){
+		// load the pendingConversion queue
+		for (PendingConversion pendingConversion : listOfMedia){
 			ConversionJob conversionJob= new ConversionJob();
-			conversionJob.setConversion(conversion);
+			conversionJob.setPendingConversion(pendingConversion);
 			conversionJob.setConversionProgress(new ConversionProgress());
 			converterQueue.addJob(conversionJob);
 		}
 
 		while (!converterQueue.isEmpty()) {
 			ConversionJob conversionJob= converterQueue.getNextJob();
-			Conversion conversion = conversionJob.getConversion();
+			PendingConversion pendingConversion = conversionJob.getPendingConversion();
 			ConversionProgress conversionProgress = conversionJob.getConversionProgress();
 
 			FFmpeg ffmpeg = new FFmpeg(converterConfig.getFfmpeg());
@@ -64,7 +64,7 @@ public class ConverterTask {
 
 			FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
 
-			FFmpegProbeResult in = ffprobe.probe(conversion.getMediaAsObject().getFileLocation());
+			FFmpegProbeResult in = ffprobe.probe(pendingConversion.getMediaAsObject().getFileLocation());
 
 			FFmpegOutputBuilder ffmpegBuilder = new FFmpegBuilder()
 				.setInput(in) // Or filename
@@ -92,7 +92,7 @@ public class ConverterTask {
 			while (true) {
 				Thread.sleep(10000);
 				if (job.getState() != FFmpegJob.State.RUNNING) {
-					Media media= conversionJob.getConversion().getMediaAsObject();
+					Media media= conversionJob.getPendingConversion().getMediaAsObject();
 					File sourceFile= new File(converterConfig.getTempDirectory() + "/converting.m4v");
 					String path= converterConfig.getOutputDirectory();
 					path+="/"+media.getUser().toLowerCase();
@@ -110,8 +110,8 @@ public class ConverterTask {
 					path+="/"+media.getTitle().toLowerCase()+" ["+media.getYear()+"]-720p.m4v";
 					File targetFile=new File(path);
 					sourceFile.renameTo(targetFile);
-					conversion.setDone(true);
-					conversionRepository.save(conversion);
+					pendingConversion.setDone(true);
+					conversionRepository.save(pendingConversion);
 					converterQueue.removeJob();
 					break;
 				}
