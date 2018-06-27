@@ -33,20 +33,10 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
-                  name: plex_password
-                  type: varchar(255)
-                  constraints:
-                    nullable: true
-              - column:
                   name: plex_token
                   type: varchar(255)
                   constraints:
                     nullable: true
-              - column:
-                  name: token_validated
-                  type: boolean
-                  constraints:
-                    nullable: false
               - column:
                   name: home_directory
                   type: varchar(255)
@@ -98,7 +88,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: a2a459a6-77f5-4d5b-8970-715e50302f0e
+                  value: 86ce7e32-00a5-4a3b-b3eb-1c5867b785d9
               - column:
                   name: username
                   value: admin

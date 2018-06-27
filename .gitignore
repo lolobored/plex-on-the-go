@@ -15,7 +15,7 @@ http/out
 plex/build
 plex/plex-apis/out
 plex/plex-apis/build
-db
+/db-plex
 elasticsearch/out
 plex-app/out
 plex/out

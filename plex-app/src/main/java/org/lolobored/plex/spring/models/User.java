@@ -1,10 +1,7 @@
 package org.lolobored.plex.spring.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -25,16 +22,11 @@ public class User {
 	@Column(name="plex_login")
 	@Basic(optional=true)
 	private String plexLogin;
-	@Column(name="plex_password")
-	@Basic(optional=true)
+	@Transient
 	private String plexPassword;
 	@Column(name="plex_token")
 	@Basic(optional=true)
 	private String plexToken;
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
-	@Column(name="token_validated")
-	private boolean tokenValidated;
 	@Column(name="home_directory")
 	@Basic(optional=true)
 	private String homeDirectory;
