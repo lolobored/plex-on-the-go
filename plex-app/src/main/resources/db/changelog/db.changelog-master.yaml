@@ -1,0 +1,116 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: lolobored
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: plex_login
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: plex_password
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: plex_token
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: token_validated
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: home_directory
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: admin
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: conversion
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: media
+                  type: clob
+                  constraints:
+                    nullable: false
+              - column:
+                  name: done
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_datetime
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_conversion_user
+                    references: users(id)
+
+  - changeSet:
+      id: 2
+      author: lolobored
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: b4fd7ae1-fff5-4a5f-8277-daa9ae4584b7
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: first_name
+                  value: Admin
+              - column:
+                  name: last_name
+                  value: Admin
+              - column:
+                  name: admin
+                  value: true
+              - column:
+                  name: token_validated
+                  value: false
