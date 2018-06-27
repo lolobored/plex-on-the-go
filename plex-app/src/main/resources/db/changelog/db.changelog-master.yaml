@@ -98,7 +98,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: b4fd7ae1-fff5-4a5f-8277-daa9ae4584b7
+                  value: a2a459a6-77f5-4d5b-8970-715e50302f0e
               - column:
                   name: username
                   value: admin
