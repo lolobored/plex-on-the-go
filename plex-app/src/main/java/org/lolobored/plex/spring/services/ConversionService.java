@@ -21,7 +21,7 @@ public interface ConversionService {
 
 	List<Converted> getConverted();
 
-	void moveToConverted(PendingConversion pendingConversion) throws IOException;
+	void moveToConverted(PendingConversion pendingConversion, String convertedFile) throws IOException;
 
 	ConversionJob getNextJob();
 }

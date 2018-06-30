@@ -55,10 +55,14 @@ public class ConverterTask {
 
 			FFmpegProbeResult in = ffprobe.probe(pendingConversion.getMediaAsObject().getFileLocation());
 
+			File tempDirectory= new File(pendingConversion.getUser().getHomeDirectory()+"/temp");
+			tempDirectory.mkdirs();
+			String sourceFile= tempDirectory.getAbsolutePath() + "/converting.m4v";
+
 			FFmpegOutputBuilder ffmpegBuilder = new FFmpegBuilder()
 				.setInput(in) // Or filename
 				.overrideOutputFiles(true)
-				.addOutput(converterConfig.getTempDirectory() + "/converting.m4v")
+				.addOutput(sourceFile)
 				.setFormat("mp4")
 				.setVideoResolution(1280, 720)
 				.setAudioChannels(2)         // Mono audio
@@ -81,7 +85,7 @@ public class ConverterTask {
 			while (true) {
 				Thread.sleep(10000);
 				if (job.getState() != FFmpegJob.State.RUNNING) {
-					conversionService.moveToConverted(pendingConversion);
+					conversionService.moveToConverted(pendingConversion, sourceFile);
 					break;
 				}
 			}

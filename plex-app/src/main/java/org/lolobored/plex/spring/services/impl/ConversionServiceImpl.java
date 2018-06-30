@@ -103,12 +103,10 @@ public class ConversionServiceImpl implements ConversionService {
 	}
 
 	@Override
-	public void moveToConverted(PendingConversion pendingConversion) throws IOException {
+	public void moveToConverted(PendingConversion pendingConversion, String convertedFilePath) throws IOException {
 		Media media= pendingConversion.getMediaAsObject();
 
-		File tempDirectory= new File(pendingConversion.getUser().getHomeDirectory()+"/temp");
-		tempDirectory.mkdirs();
-		File sourceFile= new File(converterConfig.getTempDirectory() + "/converting.m4v");
+		File sourceFile= new File(convertedFilePath);
 		String path= pendingConversion.getUser().getHomeDirectory();
 		path+="/"+media.getUser().toLowerCase();
 		path+="/movies/";
