@@ -35,7 +35,7 @@ public class HttpException extends Exception {
 	 * @param operation the operation (GET/POST...)
 	 */
 	public HttpException(String message, String request, String response, String url, Integer statusCode, String operation) {
-		this(message, request, response, url, statusCode, operation, null);
+		this(message +" request["+request+"] response["+response+"] url["+url+"] statusCode["+statusCode+"] operation ["+operation+"]", null);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class HttpException extends Exception {
 	 * @param th the exception encountered
 	 */
 	public HttpException(String message, String request, String response, String url, Integer statusCode, String operation, Throwable th) {
-		super(message, th);
+		super(message +" request["+request+"] response["+response+"] url["+url+"] statusCode["+statusCode+"] operation ["+operation+"]", th);
 		this.request= request;
 		this.response= response;
 		this.url= url;
