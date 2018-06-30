@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping({"/plex-backend/users"})
 public class UsersController {
 
-	private static String DUMMY_PASSWORD = "dummy";
+	private static String DUMMY_PASSWORD = "";
 
 	@Autowired
 	UserService userService;
@@ -71,7 +71,7 @@ public class UsersController {
 
 	@PutMapping(path = {"/{id}"})
 	@PreAuthorize("isAuthenticated()")
-	public User updateUser(@PathVariable("id") int id, @RequestBody User user, @RequestHeader(value = "Authorization") String bearerToken) {
+	public User updateUser(@PathVariable("id") String id, @RequestBody User user, @RequestHeader(value = "Authorization") String bearerToken) {
 		bearerToken = bearerToken.substring(bearerToken.indexOf(" ")).trim();
 		user = userService.updateUser(bearerToken, user);
 		// ensure we do not send back the passwords

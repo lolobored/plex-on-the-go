@@ -82,12 +82,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUser(String username) {
 		Optional<User> user = repository.findByUserName(username);
-		if (!user.isPresent()) {
-			User newuser = new User();
-			newuser.setUserName(username);
-			repository.save(newuser);
-			user = repository.findByUserName(username);
-		}
 		return user.get();
 	}
 
