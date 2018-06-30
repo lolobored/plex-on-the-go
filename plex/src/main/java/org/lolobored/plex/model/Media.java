@@ -38,6 +38,7 @@ public class Media{
 	@Id
 	private String id;
 	private String plexId;
+	private boolean converted= false;
 	private String type;
 	private String library;
 	private String user;

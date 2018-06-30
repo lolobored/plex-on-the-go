@@ -14,6 +14,7 @@ import org.lolobored.plex.spring.converter.ConverterQueue;
 import org.lolobored.plex.spring.models.PendingConversion;
 import org.lolobored.plex.spring.converter.ConversionProgress;
 import org.lolobored.plex.spring.repository.ConversionRepository;
+import org.lolobored.plex.spring.services.ConversionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,29 +34,17 @@ public class ConverterTask {
 	private static final Logger log = LoggerFactory.getLogger(ConverterTask.class);
 
 	@Autowired
-	ConversionRepository conversionRepository;
+	ConversionService conversionService;
 
 	@Autowired
 	ConverterConfig converterConfig;
 
-	@Resource(name = "conversionQueue")
-	ConverterQueue converterQueue;
-
 	@Scheduled(fixedRate = 10000)
 	public void convertMedia() throws IOException, InterruptedException {
-		List<PendingConversion> listOfMedia = conversionRepository.findAllByDoneFalseOrderByCreationDateTime();
 
-		converterQueue.removeAllJobs();
-		// load the pendingConversion queue
-		for (PendingConversion pendingConversion : listOfMedia){
-			ConversionJob conversionJob= new ConversionJob();
-			conversionJob.setPendingConversion(pendingConversion);
-			conversionJob.setConversionProgress(new ConversionProgress());
-			converterQueue.addJob(conversionJob);
-		}
-
+		List<ConversionJob> converterQueue = conversionService.getPendingConversionJobs();
 		while (!converterQueue.isEmpty()) {
-			ConversionJob conversionJob= converterQueue.getNextJob();
+			ConversionJob conversionJob= conversionService.getNextJob();
 			PendingConversion pendingConversion = conversionJob.getPendingConversion();
 			ConversionProgress conversionProgress = conversionJob.getConversionProgress();
 
@@ -92,27 +81,7 @@ public class ConverterTask {
 			while (true) {
 				Thread.sleep(10000);
 				if (job.getState() != FFmpegJob.State.RUNNING) {
-					Media media= conversionJob.getPendingConversion().getMediaAsObject();
-					File sourceFile= new File(converterConfig.getTempDirectory() + "/converting.m4v");
-					String path= converterConfig.getOutputDirectory();
-					path+="/"+media.getUser().toLowerCase();
-					path+="/movies/";
-					if (media.getGenres().isEmpty()){
-						path+="unknown";
-					}
-					else{
-						path+=media.getGenres().get(0).toLowerCase();
-					}
-					path+="/";
-					path+=media.getTitle().toLowerCase()+" ["+media.getYear()+"]";
-					File directory= new File(path);
-					directory.mkdirs();
-					path+="/"+media.getTitle().toLowerCase()+" ["+media.getYear()+"]-720p.m4v";
-					File targetFile=new File(path);
-					sourceFile.renameTo(targetFile);
-					pendingConversion.setDone(true);
-					conversionRepository.save(pendingConversion);
-					converterQueue.removeJob();
+					conversionService.moveToConverted(pendingConversion);
 					break;
 				}
 			}

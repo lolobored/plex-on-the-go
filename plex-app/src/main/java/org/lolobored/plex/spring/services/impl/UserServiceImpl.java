@@ -88,12 +88,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(String authToken, User user) {
 		String plexToken = null;
-		// try to authenticate to Plex
-		try {
-			plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
+		// get existing user
+		User existingUser = repository.findById(user.getId()).get();
 
-		} catch (HttpException | IOException e) {
-			// authentication failed
+		// if password did not change and users are the same
+		if ("".equals(user.getPlexPassword()) && existingUser.getPlexLogin()!=null &&
+			existingUser.getPlexLogin().equalsIgnoreCase(user.getPlexLogin())){
+			plexToken= existingUser.getPlexToken();
+		}
+		else{
+			// try to authenticate to Plex
+			try {
+				plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
+
+			} catch (HttpException | IOException e) {
+				// authentication failed
+			}
 		}
 
 		user.setPlexToken(plexToken);
@@ -127,6 +137,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void updateUserInKeycloak(String authToken, User user) {
+		CredentialRepresentation credential= null;
 		Keycloak kc = Keycloak.getInstance(
 				keycloakConfig.getAuthServerUrl(),
 				keycloakConfig.getRealm(), // the realm to log in to
@@ -136,21 +147,26 @@ public class UserServiceImpl implements UserService {
 		RealmResource realmResource = kc.realm(keycloakConfig.getRealm());
 		UsersResource usersResource = realmResource.users();
 
-		CredentialRepresentation credential = new CredentialRepresentation();
-		credential.setType(CredentialRepresentation.PASSWORD);
-		credential.setValue(user.getPassword());
-		credential.setTemporary(false);
-
 		// retrieve user in keycloak
 		UserRepresentation userRepresentation = usersResource.get(user.getId()).toRepresentation();
 		userRepresentation.setFirstName(user.getFirstName());
 		userRepresentation.setLastName(user.getLastName());
 		userRepresentation.setEnabled(true);
-		userRepresentation.setCredentials(Arrays.asList(credential));
+
+		if (!"".equals(user.getPassword())) {
+			credential = new CredentialRepresentation();
+			credential.setType(CredentialRepresentation.PASSWORD);
+			credential.setValue(user.getPassword());
+			credential.setTemporary(false);
+			userRepresentation.setCredentials(Arrays.asList(credential));
+		}
+
 		// get the user resource
 		UserResource userResource = usersResource.get(user.getId());
 		userResource.update(userRepresentation);
-		userResource.resetPassword(credential);
+		if (credential!=null) {
+			userResource.resetPassword(credential);
+		}
 
 		// Get realm role "tester" (requires view-realm role)
 		RoleRepresentation adminRole = kc.realm("plex").roles()
