@@ -49,7 +49,7 @@ public class ESLoaderTask {
 				try {
 					movies = plexService.exploreMovies(plexConfig.getUrl(),
 						user.getPlexUser().getToken(),
-						user.getPlexUser().getUsername(),
+						user.getUserName(),
 						true);
 					log.debug(String.format("User [%s] has a list of [%d] movies", user.getUserName(), movies.size()));
 					for (Media movie : movies) {
