@@ -4,6 +4,45 @@ databaseChangeLog:
       author: lolobored
       changes:
         - createTable:
+            tableName: plex_users
+            columns:
+              - column:
+                  name: user_id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: main
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: machine_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: machine_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: machine_token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
             tableName: users
             columns:
               - column:
@@ -28,16 +67,6 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
-                  name: plex_login
-                  type: varchar(255)
-                  constraints:
-                    nullable: true
-              - column:
-                  name: plex_token
-                  type: varchar(255)
-                  constraints:
-                    nullable: true
-              - column:
                   name: home_directory
                   type: varchar(255)
                   constraints:
@@ -52,6 +81,13 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
+              - column:
+                  name: plex_user_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_user_plex_user
+                    references: plex_users(user_id)
         - createTable:
             tableName: pending_conversion
             columns:

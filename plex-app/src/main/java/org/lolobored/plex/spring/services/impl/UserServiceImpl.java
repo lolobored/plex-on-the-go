@@ -40,24 +40,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User addUser(String authToken, User user) {
-		String plexToken = null;
-		// try to authenticate to Plex
-		try {
-			plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
-
-		} catch (HttpException | IOException e) {
-			// authentication failed
-		}
-		user.setPlexToken(plexToken);
 		// create user in keycloak
 		String id = createUserInKeycloak(authToken, user);
 		user.setId(id);
 		// update user in keycloak
 		updateUserInKeycloak(authToken, user);
 		User newUser = repository.save(user);
-		if (plexToken!=null){
-			loaderTask.loadElasticSearch();
-		}
 		return newUser;
 	}
 
@@ -87,32 +75,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(String authToken, User user) {
-		String plexToken = null;
-		// get existing user
-		User existingUser = repository.findById(user.getId()).get();
-
-		// if password did not change and users are the same
-		if ("".equals(user.getPlexPassword()) && existingUser.getPlexLogin()!=null &&
-			existingUser.getPlexLogin().equalsIgnoreCase(user.getPlexLogin())){
-			plexToken= existingUser.getPlexToken();
-		}
-		else{
-			// try to authenticate to Plex
-			try {
-				plexToken = plexService.authenticate(user.getPlexLogin(), user.getPlexPassword());
-
-			} catch (HttpException | IOException e) {
-				// authentication failed
-			}
-		}
-
-		user.setPlexToken(plexToken);
 		// update user in keycloak
 		updateUserInKeycloak(authToken, user);
 		User newUser = repository.save(user);
-		if (plexToken!=null){
-			loaderTask.loadElasticSearch();
-		}
 		return newUser;
 	}
 

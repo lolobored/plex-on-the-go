@@ -25,7 +25,7 @@ public class PendingConversion {
 	private boolean done= false;
 	@Column(name = "creation_datetime")
 	private LocalDateTime creationDateTime;
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 

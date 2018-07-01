@@ -1,0 +1,33 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="MediaContainer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Server" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute type="xs:string" name="accessToken"/>
+								<xs:attribute type="xs:string" name="name"/>
+								<xs:attribute type="xs:string" name="address"/>
+								<xs:attribute type="xs:short" name="port"/>
+								<xs:attribute type="xs:string" name="version"/>
+								<xs:attribute type="xs:string" name="scheme"/>
+								<xs:attribute type="xs:string" name="host"/>
+								<xs:attribute type="xs:string" name="localAddresses"/>
+								<xs:attribute type="xs:string" name="machineIdentifier"/>
+								<xs:attribute type="xs:int" name="createdAt"/>
+								<xs:attribute type="xs:int" name="updatedAt"/>
+								<xs:attribute type="xs:byte" name="owned"/>
+								<xs:attribute type="xs:byte" name="synced"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute type="xs:string" name="friendlyName"/>
+			<xs:attribute type="xs:string" name="identifier"/>
+			<xs:attribute type="xs:string" name="machineIdentifier"/>
+			<xs:attribute type="xs:byte" name="size"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -24,7 +24,6 @@ public class UsersController {
 		for (User user : users) {
 			// ensure we do not send back the passwords
 			user.setPassword(DUMMY_PASSWORD);
-			user.setPlexPassword(DUMMY_PASSWORD);
 		}
 		return users;
 	}
@@ -35,7 +34,6 @@ public class UsersController {
 		User user = userService.getUserById(id);
 		// ensure we do not send back the passwords
 		user.setPassword(DUMMY_PASSWORD);
-		user.setPlexPassword(DUMMY_PASSWORD);
 		return user;
 	}
 
@@ -46,7 +44,6 @@ public class UsersController {
 		User user = userService.getUser(username);
 		// ensure we do not send back the passwords
 		user.setPassword(DUMMY_PASSWORD);
-		user.setPlexPassword(DUMMY_PASSWORD);
 		return user;
 
 	}
@@ -65,7 +62,6 @@ public class UsersController {
 		user = userService.addUser(bearerToken, user);
 		// ensure we do not send back the passwords
 		user.setPassword(DUMMY_PASSWORD);
-		user.setPlexPassword(DUMMY_PASSWORD);
 		return user;
 	}
 
@@ -76,7 +72,6 @@ public class UsersController {
 		user = userService.updateUser(bearerToken, user);
 		// ensure we do not send back the passwords
 		user.setPassword(DUMMY_PASSWORD);
-		user.setPlexPassword(DUMMY_PASSWORD);
 		return user;
 	}
 }

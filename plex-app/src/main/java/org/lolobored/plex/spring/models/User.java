@@ -19,14 +19,6 @@ public class User {
 	private String firstName;
 	@Column(name="last_name")
 	private String lastName;
-	@Column(name="plex_login")
-	@Basic(optional=true)
-	private String plexLogin;
-	@Transient
-	private String plexPassword;
-	@Column(name="plex_token")
-	@Basic(optional=true)
-	private String plexToken;
 	@Column(name="home_directory")
 	@Basic(optional=true)
 	private String homeDirectory;
@@ -36,11 +28,12 @@ public class User {
 	@Column(name="admin")
 	@Basic
 	private boolean admin;
+	@OneToOne
+	@JoinColumn(name = "plex_user_id")
+	@Basic(optional=true)
+	private PlexUser plexUser;
 
 	@Transient // --> never store the password... leave that complexity to keycloak
 	private String password;
 
-	public boolean isPlexTokenValidated() {
-		return plexToken != null;
-	}
 }

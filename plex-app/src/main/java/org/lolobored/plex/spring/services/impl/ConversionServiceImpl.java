@@ -108,7 +108,6 @@ public class ConversionServiceImpl implements ConversionService {
 
 		File sourceFile= new File(convertedFilePath);
 		String path= pendingConversion.getUser().getHomeDirectory();
-		path+="/"+media.getUser().toLowerCase();
 		path+="/movies/";
 		if (media.getGenres().isEmpty()){
 			path+="unknown";

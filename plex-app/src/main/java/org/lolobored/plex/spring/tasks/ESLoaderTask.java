@@ -44,12 +44,12 @@ public class ESLoaderTask {
 		List<User> users = userService.getUsers();
 		for (User user : users) {
 			log.debug(String.format("User [%s] was authenticated by Plex", user.getUserName()));
-			if (user.isPlexTokenValidated()) {
+			if (user.getPlexUser()!=null) {
 				List<Media> movies = null;
 				try {
 					movies = plexService.exploreMovies(plexConfig.getUrl(),
-						user.getPlexToken(),
-						user.getPlexLogin(),
+						user.getPlexUser().getToken(),
+						user.getPlexUser().getUsername(),
 						true);
 					log.debug(String.format("User [%s] has a list of [%d] movies", user.getUserName(), movies.size()));
 					for (Media movie : movies) {

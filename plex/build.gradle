@@ -2,3 +2,56 @@ dependencies {
 
     compile project(':http')
 }
+buildscript {
+    repositories {
+
+        mavenCentral()
+    }
+
+
+}
+
+sourceSets.main.java.srcDirs "src/generated-sources/java"
+
+configurations {
+    jaxb
+}
+
+clean {
+    delete fileTree(dir: 'src/generated-sources/java')
+}
+
+
+dependencies {
+    jaxb(
+            'com.sun.xml.bind:jaxb-xjc:2.2.7',
+            'com.sun.xml.bind:jaxb-impl:2.2.7'
+    )
+}
+
+task jaxb {
+    System.setProperty('javax.xml.accessExternalSchema', 'all')
+    def jaxbTargetDir = file("src/generated-sources/java")
+
+    doLast {
+        jaxbTargetDir.mkdirs()
+
+        ant.taskdef(
+                name: 'xjc',
+                classname: 'com.sun.tools.xjc.XJCTask',
+                classpath: configurations.jaxb.asPath
+        )
+        ant.jaxbTargetDir = jaxbTargetDir
+
+        ant.xjc(
+                destdir: '${jaxbTargetDir}',
+                package: 'org.lolobored.plex.infrastructure')
+                {
+                    schema(dir: 'src/main/resources/plex', includes: "**/*.xsd")
+                }
+
+    }
+}
+
+compileJava.dependsOn jaxb
+

@@ -43,9 +43,9 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<Media> searchMovies(Search search) {
-		String user = search.getUser();
-		List<Media> movies = elasticSearch.searchMovies(user, search.getGenres(), search.getYearFrom(), search.getYearTo());
+	public List<Media> searchMovies(String username, Search search) {
+
+		List<Media> movies = elasticSearch.searchMovies(username, search.getGenres(), search.getYearFrom(), search.getYearTo());
 		generateConversionProperty(movies);
 		return movies;
 	}
