@@ -69,11 +69,11 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	public List<Media> getAllMovies(String user) {
 		List<Media> result= new ArrayList();
 		Pageable pageRequest= new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
-		Page<Media> page= repository.findByUser(user,pageRequest);
+		Page<Media> page= repository.findByUserAndType(user, Media.MOVIE_TYPE, pageRequest);
 		result.addAll(page.getContent()) ;
 		for (int i=1; i< page.getTotalPages(); i++){
 			pageRequest = pageRequest.next();
-			page= repository.findByUser(user,pageRequest);
+			page= repository.findByUserAndType(user, Media.MOVIE_TYPE,pageRequest);
 			result.addAll(page.getContent()) ;
 		}
 		return result;
@@ -88,14 +88,35 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 			return result;
 		}
 		Pageable pageRequest= new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
-		Page<Media> page= repository.findByUserAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, genre, startYear, endYear, pageRequest);
+		Page<Media> page= repository.findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, Media.MOVIE_TYPE, genre, startYear, endYear, pageRequest);
 		result.addAll(page.getContent()) ;
 		for (int i=1; i< page.getTotalPages(); i++){
 			pageRequest = pageRequest.next();
-			page= repository.findByUserAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, genre, startYear, endYear, pageRequest);
+			page= repository.findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, Media.MOVIE_TYPE, genre, startYear, endYear, pageRequest);
 			result.addAll(page.getContent()) ;
 		}
 		return result;
+	}
+
+	@Override
+	public List<Media> getAllTvShows(String user) {
+
+		List<Media> result= new ArrayList();
+		Pageable pageRequest= new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
+		Page<Media> page= repository.findByUserAndType(user, Media.EPISODE_TYPE, pageRequest);
+		result.addAll(page.getContent()) ;
+		for (int i=1; i< page.getTotalPages(); i++){
+			pageRequest = pageRequest.next();
+			page= repository.findByUserAndType(user, Media.EPISODE_TYPE,pageRequest);
+			result.addAll(page.getContent()) ;
+		}
+		return result;
+
+	}
+
+	@Override
+	public List<Media> searchTvShows(String username, List<String> genres, Integer yearFrom, Integer yearTo) {
+		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 

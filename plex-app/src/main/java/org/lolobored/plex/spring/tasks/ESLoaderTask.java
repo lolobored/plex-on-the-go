@@ -56,6 +56,15 @@ public class ESLoaderTask {
 						elasticSearchService.insertMedia(movie);
 						log.debug(String.format("Movie [%s][%s] was added", movie.getTitle(), movie.getFileLocation()));
 					}
+					List<Media> tvshows = plexService.exploreTvShows(plexConfig.getUrl(),
+							user.getPlexUser().getToken(),
+							user.getUserName(),
+							true);
+					log.debug(String.format("User [%s] has a list of [%d] tvshows", user.getUserName(), tvshows.size()));
+					for (Media tvshow : tvshows) {
+						elasticSearchService.insertMedia(tvshow);
+						log.debug(String.format("Movie [%s][%s] was added", tvshow.getTitle(), tvshow.getFileLocation()));
+					}
 				} catch (HttpException e) {
 					log.error("HTTPException encountered while trying to explore plex libraries", e);
 				} catch (IOException e) {

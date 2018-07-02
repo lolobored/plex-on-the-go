@@ -4,7 +4,7 @@ package org.lolobored.plex.spring.controllers;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.models.Search;
 import org.lolobored.plex.spring.models.User;
-import org.lolobored.plex.spring.services.MoviesService;
+import org.lolobored.plex.spring.services.TvShowsService;
 import org.lolobored.plex.spring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,39 +14,27 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/plex-backend/movies"})
-public class MoviesController {
+@RequestMapping({"/plex-backend/tvshows"})
+public class TvShowsController {
 
 
 	@Autowired
-	MoviesService moviesService;
+	TvShowsService tvShowsService;
 	@Autowired
 	UserService userService;
 
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
-	public List<Media> getMovies(Principal principal) {
+	public List<Media> getTvShows(Principal principal) {
 		User user = userService.getUserById(principal.getName());
-		return moviesService.getMovies(user.getUserName());
+		return tvShowsService.getTvShows(user.getUserName());
 
 	}
 
 	@PostMapping(path = {"/search"})
 	@PreAuthorize("isAuthenticated()")
-	public List<Media> searchMovies(@RequestBody Search search, Principal principal) {
+	public List<Media> searchTvShows(@RequestBody Search search, Principal principal) {
 		User user = userService.getUserById(principal.getName());
-		return moviesService.searchMovies(user.getUserName(), search);
-	}
-
-	@GetMapping(path = {"/genre"})
-	@PreAuthorize("isAuthenticated()")
-	public List<String> getGenre() {
-		return moviesService.getGenres();
-	}
-
-	@GetMapping(path = {"/year"})
-	@PreAuthorize("isAuthenticated()")
-	public List<Integer> getYears() {
-		return moviesService.getYears();
+		return tvShowsService.searchTvShows(user.getUserName(), search);
 	}
 }

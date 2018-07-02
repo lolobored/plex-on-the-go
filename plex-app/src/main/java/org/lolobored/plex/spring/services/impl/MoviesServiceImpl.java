@@ -6,7 +6,7 @@ import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.models.Converted;
 import org.lolobored.plex.spring.models.Search;
 import org.lolobored.plex.spring.services.ConversionService;
-import org.lolobored.plex.spring.services.MovieService;
+import org.lolobored.plex.spring.services.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class MovieServiceImpl implements MovieService {
+public class MoviesServiceImpl implements MoviesService {
 
 
 	@Autowired

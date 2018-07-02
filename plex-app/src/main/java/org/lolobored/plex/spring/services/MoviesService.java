@@ -6,7 +6,7 @@ import org.lolobored.plex.spring.models.User;
 
 import java.util.List;
 
-public interface MovieService {
+public interface MoviesService {
 
     List<String> getGenres();
     List<Integer> getYears();

@@ -16,13 +16,17 @@ public interface ElasticSearchService {
 	 * @throws HttpException           in case of an error while calling the REST API from elastic search
 	 * @throws JsonProcessingException in case of an error while serializing / deserializing objects using Jackson
 	 */
-	public void insertMedia(Media media) throws IOException, HttpException;
+	void insertMedia(Media media) throws IOException, HttpException;
 
-	public List<String> getMoviesGenre();
+	List<String> getMoviesGenre();
 
-	public List<Integer> getAllYears();
+	List<Integer> getAllYears();
 
-	public List<Media> getAllMovies(String user);
+	List<Media> getAllMovies(String user);
 
-	public List<Media> searchMovies(String user, List<String> genre, Integer startYear, Integer endYear);
+	List<Media> searchMovies(String user, List<String> genre, Integer startYear, Integer endYear);
+
+	List<Media> getAllTvShows(String user);
+
+	List<Media> searchTvShows(String username, List<String> genres, Integer yearFrom, Integer yearTo);
 }
