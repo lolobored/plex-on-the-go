@@ -20,7 +20,9 @@ public interface ElasticSearchService {
 
 	List<String> getMoviesGenre();
 
-	List<Integer> getAllYears();
+	List<String> getAllYears();
+
+	List<String> getTvShowsList();
 
 	List<Media> getAllMovies(String user);
 

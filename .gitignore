@@ -23,3 +23,4 @@ derby.log
 elasticsearch/build
 plex-app/build
 testing/build
+plex/src/generated-sources

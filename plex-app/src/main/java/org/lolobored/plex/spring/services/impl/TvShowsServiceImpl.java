@@ -25,6 +25,11 @@ public class TvShowsServiceImpl implements TvShowsService {
 	private ConversionService conversionService;
 
 	@Override
+	public List<String> getTvShowsList() {
+		return elasticSearch.getTvShowsList();
+	}
+
+	@Override
 	public List<Media> getTvShows(String user) {
 
 		List<Media> movies = elasticSearch.getAllTvShows(user);
@@ -39,6 +44,8 @@ public class TvShowsServiceImpl implements TvShowsService {
 		generateConversionProperty(movies);
 		return movies;
 	}
+
+
 
 	private void generateConversionProperty(List<Media> media) {
 		Set<String> convertedIds = new HashSet<>();

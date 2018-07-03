@@ -58,24 +58,7 @@ public class Media{
 	// tvshows only
 	private Show show;
 	private Season season;
-	private Integer episode;
+	private Integer episodeNumber;
 
-	/**
-	 * Returns true if it's an episode
-	 * @return
-	 */
-	@JsonIgnore
-	public boolean isEpisode(){
-		return EPISODE_TYPE.equals(type);
-	}
-
-	/**
-	 * Returns true if it's a movie
-	 * @return
-	 */
-	@JsonIgnore
-	public boolean isMovie(){
-		return MOVIE_TYPE.equals(type);
-	}
 }
 

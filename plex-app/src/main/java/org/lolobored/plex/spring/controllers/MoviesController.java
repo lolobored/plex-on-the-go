@@ -46,7 +46,7 @@ public class MoviesController {
 
 	@GetMapping(path = {"/year"})
 	@PreAuthorize("isAuthenticated()")
-	public List<Integer> getYears() {
+	public List<String> getYears() {
 		return moviesService.getYears();
 	}
 }

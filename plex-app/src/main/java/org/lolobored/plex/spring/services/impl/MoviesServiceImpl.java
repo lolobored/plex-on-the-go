@@ -30,7 +30,7 @@ public class MoviesServiceImpl implements MoviesService {
 	}
 
 	@Override
-	public List<Integer> getYears() {
+	public List<String> getYears() {
 		return elasticSearch.getAllYears();
 	}
 

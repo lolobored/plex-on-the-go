@@ -226,7 +226,7 @@ public class PlexServiceImpl implements PlexService {
 
 		media.setSeason(season);
 		media.setShow(show);
-		media.setEpisode(metadata.getIndex());
+		media.setEpisodeNumber(metadata.getIndex());
 		if (metadata.getOriginallyAvailableAt() != null) {
 			media.setReleaseDate(LocalDate.parse(metadata.getOriginallyAvailableAt()));
 		}

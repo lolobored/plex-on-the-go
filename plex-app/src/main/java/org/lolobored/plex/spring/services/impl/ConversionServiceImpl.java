@@ -3,6 +3,7 @@ package org.lolobored.plex.spring.services.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.bramp.ffmpeg.FFmpegUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.config.ConverterConfig;
 import org.lolobored.plex.spring.converter.ConversionJob;
@@ -108,18 +109,30 @@ public class ConversionServiceImpl implements ConversionService {
 
 		File sourceFile= new File(convertedFilePath);
 		String path= pendingConversion.getUser().getHomeDirectory();
-		path+="/movies/";
-		if (media.getGenres().isEmpty()){
-			path+="unknown";
+		if (Media.MOVIE_TYPE.equals(pendingConversion.getMediaAsObject())) {
+			path += "/movies/";
+			if (media.getGenres().isEmpty()) {
+				path += "unknown";
+			} else {
+				path += media.getGenres().get(0).toLowerCase();
+			}
+			path += "/";
+			path += media.getTitle().toLowerCase() + " [" + media.getYear() + "]";
+			File directory = new File(path);
+			directory.mkdirs();
+			path += "/" + media.getTitle().toLowerCase() + " [" + media.getYear() + "]-720p.m4v";
 		}
 		else{
-			path+=media.getGenres().get(0).toLowerCase();
+			path += "/tvshows/";
+			path += media.getShow().getShowTitle().toLowerCase();
+			path+= "/season "+media.getSeason().getSeasonNumber();
+			File directory = new File(path);
+			directory.mkdirs();
+			path+= "/s"+ StringUtils.leftPad(media.getSeason().getSeasonNumber().toString(), 2, "0");
+			path+= "e"+ StringUtils.leftPad(media.getEpisodeNumber().toString(), 2, "0");
+			path += " "+media.getShow().getShowTitle().toLowerCase()+"-720p.m4v";
+
 		}
-		path+="/";
-		path+=media.getTitle().toLowerCase()+" ["+media.getYear()+"]";
-		File directory= new File(path);
-		directory.mkdirs();
-		path+="/"+media.getTitle().toLowerCase()+" ["+media.getYear()+"]-720p.m4v";
 		File targetFile=new File(path);
 		sourceFile.renameTo(targetFile);
 

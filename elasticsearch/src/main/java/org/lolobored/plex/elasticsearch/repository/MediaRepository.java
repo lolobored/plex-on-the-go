@@ -3,6 +3,7 @@ package org.lolobored.plex.elasticsearch.repository;
 import org.lolobored.plex.model.Media;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface MediaRepository extends ElasticsearchRepository<Media, String> 
 
 	Page<Media> findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(String user, String type,
 																																											List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
+
+	Page<Media> findByUserAndTypeAndShowInAndYearGreaterThanEqualAndYearLessThanEqual(String user, String type,
+																																											List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
+
 }

@@ -23,6 +23,13 @@ public class TvShowsController {
 	@Autowired
 	UserService userService;
 
+
+	@GetMapping(path = {"/list"})
+	@PreAuthorize("isAuthenticated()")
+	public List<String> getTvShows() {
+		return tvShowsService.getTvShowsList();
+	}
+
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
 	public List<Media> getTvShows(Principal principal) {

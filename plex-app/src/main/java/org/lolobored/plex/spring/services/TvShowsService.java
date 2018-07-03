@@ -10,4 +10,6 @@ public interface TvShowsService {
 	List<Media> getTvShows(String user);
 
 	List<Media> searchTvShows(String username, Search search);
+
+	List<String> getTvShowsList();
 }
