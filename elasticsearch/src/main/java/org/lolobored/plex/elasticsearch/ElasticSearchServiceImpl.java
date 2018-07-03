@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	@Autowired
 	private MediaRepository mediaRepository;
 
-	@
+	@Autowired
+	ElasticsearchTemplate elasticsearchTemplate;
 
 	private static Logger logger = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
 
@@ -105,7 +107,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		for (DataType dataType : page.getContent()) {
 			result.add(dataType.getValue());
 		}
-		for (int i = 1; i < page.getTotalPages(); i++) {
+		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
 			page = dataTypeRepository.findByType(DataType.TV_SHOW, pageRequest);
 			for (DataType dataType : page.getContent()) {
@@ -123,7 +125,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		for (DataType dataType : page.getContent()) {
 			result.add(dataType.getValue());
 		}
-		for (int i = 1; i < page.getTotalPages(); i++) {
+		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
 			page = dataTypeRepository.findByType(DataType.GENRE, pageRequest);
 			for (DataType dataType : page.getContent()) {
@@ -142,7 +144,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		for (DataType dataType : page.getContent()) {
 			result.add(dataType.getValue());
 		}
-		for (int i = 1; i < page.getTotalPages(); i++) {
+		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
 			page = dataTypeRepository.findByType(DataType.YEAR, pageRequest);
 			for (DataType dataType : page.getContent()) {
@@ -159,7 +161,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
 		Page<Media> page = mediaRepository.findByUserAndType(user, Media.MOVIE_TYPE, pageRequest);
 		result.addAll(page.getContent());
-		for (int i = 1; i < page.getTotalPages(); i++) {
+		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
 			page = mediaRepository.findByUserAndType(user, Media.MOVIE_TYPE, pageRequest);
 			result.addAll(page.getContent());
@@ -178,7 +180,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
 		Page<Media> page = mediaRepository.findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, Media.MOVIE_TYPE, genre, startYear, endYear, pageRequest);
 		result.addAll(page.getContent());
-		for (int i = 1; i < page.getTotalPages(); i++) {
+		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
 			page = mediaRepository.findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, Media.MOVIE_TYPE, genre, startYear, endYear, pageRequest);
 			result.addAll(page.getContent());
@@ -194,7 +196,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 			"season.seasonNumber", "episodeNumber");
 		Page<Media> page = mediaRepository.findByUserAndType(user, Media.EPISODE_TYPE, pageRequest);
 		result.addAll(page.getContent());
-		for (int i = 1; i < page.getTotalPages(); i++) {
+		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
 			page = mediaRepository.findByUserAndType(user, Media.EPISODE_TYPE, pageRequest);
 			result.addAll(page.getContent());
@@ -205,12 +207,27 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
 	@Override
 	public List<Media> searchTvShows(String username, List<String> showTitles) {
+		List<Media> result = new ArrayList<>();
+		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "show.showTitle.keyword",
+			"season.seasonNumber", "episodeNumber");
 		SearchQuery searchQuery = new NativeSearchQueryBuilder()
 				.withFilter(  termsQuery("show.showTitle.keyword", showTitles))
+			.withPageable(pageRequest)
 				.build();
-		List<Media> articles = getElasticsearchTemplate()
-				.queryForList(searchQuery, Article.class);
-		return new ArrayList<>();
+		Page<Media> page = elasticsearchTemplate
+				.queryForPage(searchQuery, Media.class);
+		result.addAll(page.getContent());
+		while(result.size() < page.getTotalElements()) {
+			pageRequest = pageRequest.next();
+			searchQuery = new NativeSearchQueryBuilder()
+				.withFilter(  termsQuery("show.showTitle.keyword", showTitles))
+				.withPageable(pageRequest)
+				.build();
+			page = elasticsearchTemplate
+				.queryForPage(searchQuery, Media.class);
+			result.addAll(page.getContent());
+		}
+		return result;
 	}
 
 

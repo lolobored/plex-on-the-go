@@ -56,11 +56,6 @@ public class PlexApplication {
 		return converterQueue;
 	}
 
-	@Bean
-	public ElasticsearchOperations elasticsearchTemplate() throws Exception {
-		return new ElasticsearchTemplate(client());
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(PlexApplication.class, args);
 	}
