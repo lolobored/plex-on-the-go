@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDa
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -52,6 +54,11 @@ public class PlexApplication {
 		}
 
 		return converterQueue;
+	}
+
+	@Bean
+	public ElasticsearchOperations elasticsearchTemplate() throws Exception {
+		return new ElasticsearchTemplate(client());
 	}
 
 	public static void main(String[] args) {

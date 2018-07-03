@@ -10,5 +10,5 @@ import java.util.List;
 public class Search extends Media {
 	private Integer yearFrom;
 	private Integer yearTo;
-	private List<String> tvShowsList= new ArrayList<>();
+	private List<String> showTitles= new ArrayList<>();
 }

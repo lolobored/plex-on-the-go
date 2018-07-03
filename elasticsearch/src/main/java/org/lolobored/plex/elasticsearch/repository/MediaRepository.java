@@ -20,4 +20,6 @@ public interface MediaRepository extends ElasticsearchRepository<Media, String> 
 	Page<Media> findByUserAndTypeAndShowInAndYearGreaterThanEqualAndYearLessThanEqual(String user, String type,
 																																											List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
 
+	@Query("{\"bool\" : {\"must\" : {\"field\" : {\"name\" : \"?0\"}}}}")
+	Page<Media> findByName(String name,Pageable pageable);
 }

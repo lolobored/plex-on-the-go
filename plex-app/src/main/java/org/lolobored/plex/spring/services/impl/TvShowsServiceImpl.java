@@ -40,7 +40,7 @@ public class TvShowsServiceImpl implements TvShowsService {
 	@Override
 	public List<Media> searchTvShows(String username, Search search) {
 
-		List<Media> movies = elasticSearch.searchTvShows(username, search.getGenres(), search.getYearFrom(), search.getYearTo());
+		List<Media> movies = elasticSearch.searchTvShows(username, search.getShowTitles());
 		generateConversionProperty(movies);
 		return movies;
 	}

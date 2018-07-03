@@ -13,10 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.regexpQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
 public class ElasticSearchServiceImpl implements ElasticSearchService {
@@ -27,6 +32,8 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
 	@Autowired
 	private MediaRepository mediaRepository;
+
+	@
 
 	private static Logger logger = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
 
@@ -197,8 +204,13 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	}
 
 	@Override
-	public List<Media> searchTvShows(String username, List<String> genres, Integer yearFrom, Integer yearTo) {
-		throw new UnsupportedOperationException("Not implemented yet");
+	public List<Media> searchTvShows(String username, List<String> showTitles) {
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withFilter(  termsQuery("show.showTitle.keyword", showTitles))
+				.build();
+		List<Media> articles = getElasticsearchTemplate()
+				.queryForList(searchQuery, Article.class);
+		return new ArrayList<>();
 	}
 
 

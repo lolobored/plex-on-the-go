@@ -30,5 +30,5 @@ public interface ElasticSearchService {
 
 	List<Media> getAllTvShows(String user);
 
-	List<Media> searchTvShows(String username, List<String> genres, Integer yearFrom, Integer yearTo);
+	List<Media> searchTvShows(String username, List<String> genres);
 }
