@@ -63,7 +63,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		// save genre as datatypes for movies
 		if (media.getType().equals(Media.MOVIE_TYPE)) {
 			for (String genre : media.getGenres()) {
-				Optional<DataType> existingGenre = dataTypeRepository.findByTypeEqualsAndValueEquals(DataType.GENRE, genre);
+				Optional<DataType> existingGenre = dataTypeRepository.findByTypeAndValue(DataType.GENRE, genre);
 				if (!existingGenre.isPresent()) {
 					DataType dataType = new DataType();
 					dataType.setId(UUID.randomUUID().toString());
@@ -76,7 +76,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		}
 		// save year as datatypes for movies
 		if (media.getType().equals(Media.MOVIE_TYPE) && media.getYear() != null) {
-			Optional<DataType> existingYear = dataTypeRepository.findByTypeEqualsAndValueEquals(DataType.YEAR, media.getYear().toString());
+			Optional<DataType> existingYear = dataTypeRepository.findByTypeAndValue(DataType.YEAR, media.getYear().toString());
 			if (!existingYear.isPresent()) {
 				DataType dataType = new DataType();
 				dataType.setId(UUID.randomUUID().toString());
@@ -87,7 +87,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		}
 		// save genre as datatypes for movies
 		if (media.getType().equals(Media.EPISODE_TYPE)) {
-			Optional<DataType> existingShow = dataTypeRepository.findByTypeEqualsAndValueEquals(DataType.TV_SHOW, media.getShow().getShowTitle().replace(":", "\\:"));
+			Optional<DataType> existingShow = dataTypeRepository.findByTypeAndValue(DataType.TV_SHOW, media.getShow().getShowTitle());
 			if (!existingShow.isPresent()) {
 				DataType dataType = new DataType();
 				dataType.setId(UUID.randomUUID().toString());
