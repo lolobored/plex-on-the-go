@@ -1,5 +1,6 @@
 package org.lolobored.plex.spring.services;
 
+import org.lolobored.http.HttpException;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.models.Search;
 
@@ -9,7 +10,7 @@ public interface TvShowsService {
 
 	List<Media> getTvShows(String user);
 
-	List<Media> searchTvShows(String username, Search search);
+	List<Media> searchTvShows(String username, Search search) throws HttpException;
 
 	List<String> getTvShowsList();
 }

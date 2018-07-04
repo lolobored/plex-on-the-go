@@ -1,23 +1,21 @@
-package org.lolobored.plex.spring.config;
+package org.lolobored.plex.elasticsearch.config;
 
+import lombok.Data;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
-import javax.annotation.Resource;
 import java.net.InetAddress;
 
 @Configuration
+@Data
 @PropertySource(value = "classpath:application.properties")
 public class ElasticSearchConfig {
 
@@ -26,6 +24,12 @@ public class ElasticSearchConfig {
 
 	@Value("${elasticsearch.port}")
 	private int EsPort;
+
+	@Value("${spring.data.jest.uri}")
+	private String ESHttpUrl;
+
+	@Value("${elasticsearch.maxresults}")
+	private Integer ESMaxResult;
 
 	@Bean
 	public Client client() throws Exception {

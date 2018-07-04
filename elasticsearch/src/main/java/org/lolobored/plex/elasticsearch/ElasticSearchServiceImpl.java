@@ -2,6 +2,8 @@ package org.lolobored.plex.elasticsearch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.lolobored.http.HttpException;
+import org.lolobored.http.HttpUtil;
+import org.lolobored.plex.elasticsearch.config.ElasticSearchConfig;
 import org.lolobored.plex.elasticsearch.repository.DataTypeRepository;
 import org.lolobored.plex.elasticsearch.repository.MediaRepository;
 import org.lolobored.plex.elasticsearch.search.DataType;
@@ -36,6 +38,9 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
 	@Autowired
 	ElasticsearchTemplate elasticsearchTemplate;
+
+	@Autowired
+	ElasticSearchConfig elasticSearchConfig;
 
 	private static Logger logger = LoggerFactory.getLogger(ElasticSearchServiceImpl.class);
 
@@ -206,7 +211,8 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 	}
 
 	@Override
-	public List<Media> searchTvShows(String username, List<String> showTitles) {
+	public List<Media> searchTvShows(String username, List<String> showTitles) throws HttpException {
+		setMaxResultWindow(elasticSearchConfig.getESHttpUrl(), elasticSearchConfig.getESMaxResult());
 		List<Media> result = new ArrayList<>();
 		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "show.showTitle.keyword",
 			"season.seasonNumber", "episodeNumber");
@@ -230,5 +236,15 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		return result;
 	}
 
+
+	private void setMaxResultWindow(String url, Integer maxResult) throws HttpException {
+		HttpUtil httpUtil = HttpUtil.getInstance(false);
+		String json= "{\n" +
+			"  \"index.max_result_window\" : \""+maxResult+"\"\n" +
+			"}";
+		Map<String, String> header= new HashMap<>();
+		header.put("Content-Type", "application/json;charset=UTF-8");
+		httpUtil.put(url+"/media/_settings", json, header);
+	}
 
 }

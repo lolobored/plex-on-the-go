@@ -1,5 +1,6 @@
 package org.lolobored.plex.spring.services.impl;
 
+import org.lolobored.http.HttpException;
 import org.lolobored.plex.elasticsearch.ElasticSearchService;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionJob;
@@ -38,7 +39,7 @@ public class TvShowsServiceImpl implements TvShowsService {
 	}
 
 	@Override
-	public List<Media> searchTvShows(String username, Search search) {
+	public List<Media> searchTvShows(String username, Search search) throws HttpException {
 
 		List<Media> movies = elasticSearch.searchTvShows(username, search.getShowTitles());
 		generateConversionProperty(movies);

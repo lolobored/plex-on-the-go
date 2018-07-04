@@ -30,5 +30,5 @@ public interface ElasticSearchService {
 
 	List<Media> getAllTvShows(String user);
 
-	List<Media> searchTvShows(String username, List<String> genres);
+	List<Media> searchTvShows(String username, List<String> genres) throws HttpException;
 }
