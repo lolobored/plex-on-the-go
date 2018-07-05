@@ -72,6 +72,7 @@ public class ConversionServiceImpl implements ConversionService {
 		return converterQueue.getNextJob();
 	}
 
+
 	@Override
 	public List<ConversionJob> getPendingConversionJobs(){
 		return converterQueue.getAllJobs();
@@ -150,5 +151,10 @@ public class ConversionServiceImpl implements ConversionService {
 		converterQueue.removeJob();
 		convertedRepository.save(converted);
 
+	}
+
+	@Override
+	public void delete(PendingConversion pendingConversion) {
+		conversionRepository.delete(pendingConversion);
 	}
 }
