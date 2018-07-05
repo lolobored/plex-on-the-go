@@ -156,5 +156,6 @@ public class ConversionServiceImpl implements ConversionService {
 	@Override
 	public void delete(PendingConversion pendingConversion) {
 		conversionRepository.delete(pendingConversion);
+		converterQueue.removeJob();
 	}
 }
