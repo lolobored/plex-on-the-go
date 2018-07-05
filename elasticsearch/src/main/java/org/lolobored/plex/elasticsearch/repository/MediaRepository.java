@@ -38,6 +38,6 @@ public interface MediaRepository extends ElasticsearchRepository<Media, String> 
 		"    ]\n" +
 		"  }\n" +
 		"}")
-	Page<Media> findTvShowByUserAndShow(String user, String shows, Pageable pageable);
+	Page<Media> findTvShowByUserAndShow(String shows, String user, Pageable pageable);
 
 }

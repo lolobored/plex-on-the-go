@@ -219,16 +219,16 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		StringBuilder showNames= new StringBuilder();
 		for (String showTitle : showTitles) {
 			if (showNames.length()>0){
-				showNames.append(", ");
+				showNames.append("\", \"");
 			}
 			showNames.append(showTitle);
 		}
 
-		Page<Media> page = mediaRepository.findTvShowByUserAndShow(username, showNames.toString(), pageRequest);
+		Page<Media> page = mediaRepository.findTvShowByUserAndShow(showNames.toString(), username, pageRequest);
 		result.addAll(page.getContent());
 		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
-			page = mediaRepository.findTvShowByUserAndShow(username, showNames.toString(), pageRequest);
+			page = mediaRepository.findTvShowByUserAndShow(showNames.toString(), username, pageRequest);
 			result.addAll(page.getContent());
 		}
 		return result;
