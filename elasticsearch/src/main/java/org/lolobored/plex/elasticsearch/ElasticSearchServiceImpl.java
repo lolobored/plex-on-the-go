@@ -212,39 +212,26 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
 	@Override
 	public List<Media> searchTvShows(String username, List<String> showTitles) throws HttpException {
-		setMaxResultWindow(elasticSearchConfig.getESHttpUrl(), elasticSearchConfig.getESMaxResult());
-		List<Media> result = new ArrayList<>();
+		List<Media> result = new ArrayList();
 		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "show.showTitle.keyword",
 			"season.seasonNumber", "episodeNumber");
-		SearchQuery searchQuery = new NativeSearchQueryBuilder()
-				.withFilter(  termsQuery("show.showTitle.keyword", showTitles))
-			.withPageable(pageRequest)
-				.build();
-		Page<Media> page = elasticsearchTemplate
-				.queryForPage(searchQuery, Media.class);
+
+		StringBuilder showNames= new StringBuilder();
+		for (String showTitle : showTitles) {
+			if (showNames.length()>0){
+				showNames.append(", ");
+			}
+			showNames.append(showTitle);
+		}
+
+		Page<Media> page = mediaRepository.findTvShowByUserAndShow(username, showNames.toString(), pageRequest);
 		result.addAll(page.getContent());
 		while(result.size() < page.getTotalElements()) {
 			pageRequest = pageRequest.next();
-			searchQuery = new NativeSearchQueryBuilder()
-				.withFilter(  termsQuery("show.showTitle.keyword", showTitles))
-				.withPageable(pageRequest)
-				.build();
-			page = elasticsearchTemplate
-				.queryForPage(searchQuery, Media.class);
+			page = mediaRepository.findTvShowByUserAndShow(username, showNames.toString(), pageRequest);
 			result.addAll(page.getContent());
 		}
 		return result;
-	}
-
-
-	private void setMaxResultWindow(String url, Integer maxResult) throws HttpException {
-		HttpUtil httpUtil = HttpUtil.getInstance(false);
-		String json= "{\n" +
-			"  \"index.max_result_window\" : \""+maxResult+"\"\n" +
-			"}";
-		Map<String, String> header= new HashMap<>();
-		header.put("Content-Type", "application/json;charset=UTF-8");
-		httpUtil.put(url+"/media/_settings", json, header);
 	}
 
 }

@@ -18,8 +18,26 @@ public interface MediaRepository extends ElasticsearchRepository<Media, String> 
 																																											List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
 
 	Page<Media> findByUserAndTypeAndShowInAndYearGreaterThanEqualAndYearLessThanEqual(String user, String type,
-																																											List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
+																																										List<String> genres, Integer startYear, Integer endYear, Pageable pageable);
 
-	@Query("{\"bool\" : {\"must\" : {\"field\" : {\"name\" : \"?0\"}}}}")
-	Page<Media> findByName(String name,Pageable pageable);
+	@Query("{\n" +
+		"  \"bool\": {\n" +
+		"    \"must\": [\n" +
+		"      {\n" +
+		"        \"terms\": {\n" +
+		"          \"show.showTitle.keyword\": [\n" +
+		"            \"?0\"\n" +
+		"          ]\n" +
+		"        }\n" +
+		"      },\n" +
+		"      {\n" +
+		"        \"term\": {\n" +
+		"          \"user.keyword\": \"?1\"\n" +
+		"        }\n" +
+		"      }\n" +
+		"    ]\n" +
+		"  }\n" +
+		"}")
+	Page<Media> findTvShowByUserAndShow(String user, String shows, Pageable pageable);
+
 }
