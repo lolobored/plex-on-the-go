@@ -4,7 +4,8 @@ import org.lolobored.plex.elasticsearch.ElasticSearchService;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.models.Converted;
-import org.lolobored.plex.spring.models.Search;
+import org.lolobored.plex.elasticsearch.search.SearchRequest;
+import org.lolobored.plex.elasticsearch.search.SearchResponse;
 import org.lolobored.plex.spring.services.ConversionService;
 import org.lolobored.plex.spring.services.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,22 +36,15 @@ public class MoviesServiceImpl implements MoviesService {
 	}
 
 	@Override
-	public List<Media> getMovies(String user) {
+	public SearchResponse searchMovies(String username, SearchRequest searchRequest) {
 
-		List<Media> movies = elasticSearch.getAllMovies(user);
-		generateConversionProperty(movies);
-		return movies;
+		SearchResponse response = elasticSearch.searchMovies(username, searchRequest.getGenres(), searchRequest.getYearFrom(), searchRequest.getYearTo(),
+			searchRequest.getPageNumber(), searchRequest.getResultPerPage());
+		generateConversionProperty(response);
+		return response;
 	}
 
-	@Override
-	public List<Media> searchMovies(String username, Search search) {
-
-		List<Media> movies = elasticSearch.searchMovies(username, search.getGenres(), search.getYearFrom(), search.getYearTo());
-		generateConversionProperty(movies);
-		return movies;
-	}
-
-	private void generateConversionProperty(List<Media> media) {
+	private void generateConversionProperty(SearchResponse response) {
 		Set<String> convertedIds = new HashSet<>();
 		// get converted and Conversion
 		List<ConversionJob> pendings = conversionService.getPendingConversionJobs();
@@ -61,7 +55,7 @@ public class MoviesServiceImpl implements MoviesService {
 		for (Converted done : dones) {
 			convertedIds.add(done.getId());
 		}
-		for (Media movie : media) {
+		for (Media movie : response.getResults()) {
 			if (convertedIds.contains(movie.getId())) {
 				movie.setConverted(true);
 			}

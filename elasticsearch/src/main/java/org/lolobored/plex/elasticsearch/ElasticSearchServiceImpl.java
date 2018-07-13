@@ -2,11 +2,11 @@ package org.lolobored.plex.elasticsearch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.lolobored.http.HttpException;
-import org.lolobored.http.HttpUtil;
 import org.lolobored.plex.elasticsearch.config.ElasticSearchConfig;
 import org.lolobored.plex.elasticsearch.repository.DataTypeRepository;
 import org.lolobored.plex.elasticsearch.repository.MediaRepository;
 import org.lolobored.plex.elasticsearch.search.DataType;
+import org.lolobored.plex.elasticsearch.search.SearchResponse;
 import org.lolobored.plex.model.Media;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +16,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.*;
 
-import static org.elasticsearch.index.query.QueryBuilders.regexpQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
@@ -159,38 +157,16 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 		return result;
 	}
 
-
 	@Override
-	public List<Media> getAllMovies(String user) {
-		List<Media> result = new ArrayList();
-		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
-		Page<Media> page = mediaRepository.findByUserAndType(user, Media.MOVIE_TYPE, pageRequest);
-		result.addAll(page.getContent());
-		while(result.size() < page.getTotalElements()) {
-			pageRequest = pageRequest.next();
-			page = mediaRepository.findByUserAndType(user, Media.MOVIE_TYPE, pageRequest);
-			result.addAll(page.getContent());
-		}
-		return result;
+	public SearchResponse searchMovies(String user, List<String> genre, Integer startYear, Integer endYear, int currentPage, int resultPerPage) {
+		SearchResponse searchResponse= new SearchResponse();
 
-	}
-
-	@Override
-	public List<Media> searchMovies(String user, List<String> genre, Integer startYear, Integer endYear) {
-		List<Media> result = new ArrayList<>();
-		// if genre is empty
-		if (genre.isEmpty()) {
-			return result;
-		}
-		Pageable pageRequest = new PageRequest(0, 1000, Sort.Direction.ASC, "title.keyword");
+		Pageable pageRequest = new PageRequest(currentPage, resultPerPage, Sort.Direction.ASC, "title.keyword");
 		Page<Media> page = mediaRepository.findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, Media.MOVIE_TYPE, genre, startYear, endYear, pageRequest);
-		result.addAll(page.getContent());
-		while(result.size() < page.getTotalElements()) {
-			pageRequest = pageRequest.next();
-			page = mediaRepository.findByUserAndTypeAndGenresInAndYearGreaterThanEqualAndYearLessThanEqual(user, Media.MOVIE_TYPE, genre, startYear, endYear, pageRequest);
-			result.addAll(page.getContent());
-		}
-		return result;
+		searchResponse.getResults().addAll(page.getContent());
+		searchResponse.setPageNumber(BigInteger.valueOf(currentPage));
+		searchResponse.setTotal(BigInteger.valueOf(page.getTotalElements()));
+		return searchResponse;
 	}
 
 	@Override

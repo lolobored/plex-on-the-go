@@ -5,7 +5,7 @@ import org.lolobored.plex.elasticsearch.ElasticSearchService;
 import org.lolobored.plex.model.Media;
 import org.lolobored.plex.spring.converter.ConversionJob;
 import org.lolobored.plex.spring.models.Converted;
-import org.lolobored.plex.spring.models.Search;
+import org.lolobored.plex.elasticsearch.search.SearchRequest;
 import org.lolobored.plex.spring.services.ConversionService;
 import org.lolobored.plex.spring.services.TvShowsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,9 @@ public class TvShowsServiceImpl implements TvShowsService {
 	}
 
 	@Override
-	public List<Media> searchTvShows(String username, Search search) throws HttpException {
+	public List<Media> searchTvShows(String username, SearchRequest searchRequest) throws HttpException {
 
-		List<Media> movies = elasticSearch.searchTvShows(username, search.getShowTitles());
+		List<Media> movies = elasticSearch.searchTvShows(username, searchRequest.getShowTitles());
 		generateConversionProperty(movies);
 		return movies;
 	}

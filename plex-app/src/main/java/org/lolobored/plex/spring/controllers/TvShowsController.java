@@ -3,7 +3,7 @@ package org.lolobored.plex.spring.controllers;
 
 import org.lolobored.http.HttpException;
 import org.lolobored.plex.model.Media;
-import org.lolobored.plex.spring.models.Search;
+import org.lolobored.plex.elasticsearch.search.SearchRequest;
 import org.lolobored.plex.spring.models.User;
 import org.lolobored.plex.spring.services.TvShowsService;
 import org.lolobored.plex.spring.services.UserService;
@@ -41,8 +41,8 @@ public class TvShowsController {
 
 	@PostMapping(path = {"/search"})
 	@PreAuthorize("isAuthenticated()")
-	public List<Media> searchTvShows(@RequestBody Search search, Principal principal) throws HttpException {
+	public List<Media> searchTvShows(@RequestBody SearchRequest searchRequest, Principal principal) throws HttpException {
 		User user = userService.getUserById(principal.getName());
-		return tvShowsService.searchTvShows(user.getUserName(), search);
+		return tvShowsService.searchTvShows(user.getUserName(), searchRequest);
 	}
 }

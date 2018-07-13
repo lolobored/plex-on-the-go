@@ -2,6 +2,7 @@ package org.lolobored.plex.elasticsearch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.lolobored.http.HttpException;
+import org.lolobored.plex.elasticsearch.search.SearchResponse;
 import org.lolobored.plex.model.Media;
 
 import java.io.IOException;
@@ -24,9 +25,7 @@ public interface ElasticSearchService {
 
 	List<String> getTvShowsList();
 
-	List<Media> getAllMovies(String user);
-
-	List<Media> searchMovies(String user, List<String> genre, Integer startYear, Integer endYear);
+	SearchResponse searchMovies(String user, List<String> genre, Integer startYear, Integer endYear, int currentPage, int resultPerPage);
 
 	List<Media> getAllTvShows(String user);
 

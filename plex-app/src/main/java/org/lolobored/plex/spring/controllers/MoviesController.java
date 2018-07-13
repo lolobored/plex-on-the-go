@@ -1,8 +1,8 @@
 package org.lolobored.plex.spring.controllers;
 
 
-import org.lolobored.plex.model.Media;
-import org.lolobored.plex.spring.models.Search;
+import org.lolobored.plex.elasticsearch.search.SearchRequest;
+import org.lolobored.plex.elasticsearch.search.SearchResponse;
 import org.lolobored.plex.spring.models.User;
 import org.lolobored.plex.spring.services.MoviesService;
 import org.lolobored.plex.spring.services.UserService;
@@ -23,19 +23,11 @@ public class MoviesController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping
-	@PreAuthorize("isAuthenticated()")
-	public List<Media> getMovies(Principal principal) {
-		User user = userService.getUserById(principal.getName());
-		return moviesService.getMovies(user.getUserName());
-
-	}
-
 	@PostMapping(path = {"/search"})
 	@PreAuthorize("isAuthenticated()")
-	public List<Media> searchMovies(@RequestBody Search search, Principal principal) {
+	public SearchResponse searchMovies(@RequestBody SearchRequest searchRequest, Principal principal) {
 		User user = userService.getUserById(principal.getName());
-		return moviesService.searchMovies(user.getUserName(), search);
+		return moviesService.searchMovies(user.getUserName(), searchRequest);
 	}
 
 	@GetMapping(path = {"/genre"})
